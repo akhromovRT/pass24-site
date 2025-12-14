@@ -161,14 +161,18 @@
 
 ### 8. Видимость .env в IDE
 
-  Чтобы `.env` был виден в Cursor/VS Code, но не попадал в git:
+Чтобы `.env` был виден пользователю в IDE, но скрыт от git и AI-агентов:
 
-  1. **`.vscode/settings.json`:**
-     ```json
-     {
-       "explorer.excludeGitIgnore": false,
-       "files.exclude": { "**/.env": false }
-     }
+1. **`.vscode/settings.json`:**
+   ```json
+   {
+     "explorer.excludeGitIgnore": false,
+     "files.exclude": { "**/.env": false }
+   }
+   ```
 
-  2. .cursorignore — НЕ добавлять .env (он уже в .gitignore)
-  3. После изменений: Cmd+Shift+P → Reload Window
+2. **`.cursorignore`:**
+   ```
+   .env
+   !.env.example
+   ```
