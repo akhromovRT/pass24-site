@@ -8,3 +8,10 @@
 Краткий журнал итераций проекта.
 
 ## Записи
+
+### 2026-02-23 — Инициализация проекта
+
+- Создан репозиторий на основе шаблона 2030ai/project_template
+- Заполнено описание проекта в AGENTS.md
+- Описана архитектура WordPress-сайта в agent_docs/architecture.md
+- Настроено окружение: `.vscode/settings.json`, `.cursorignore`, `.env.example`
