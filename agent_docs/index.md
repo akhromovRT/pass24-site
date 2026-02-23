@@ -1,16 +1,22 @@
 # Навигация по документам
 
-Короткая навигация. Читать только релевантные файлы.
+Открывать только релевантные файлы — не читать всё подряд.
 
 ## Основные
-- `agent_docs/architecture.md` — архитектура и компоненты; актуально при изменениях системы.
-- `agent_docs/adr.md` — архитектурные решения и компромиссы; использовать при важных решениях.
-- `agent_docs/development-history.md` — журнал итераций; смотреть последнюю запись. Архив: `agent_docs/development-history-archive.md`.
+- `agent_docs/architecture.md` — техстек, карта сайта, дизайн-система, хостинг. Читать при изменениях системы или настройке нового компонента.
+- `agent_docs/implementation-plan.md` — детальный чек-лист по 6 фазам (Фаза 1: фундамент → Фаза 6: оптимизация). Читать при выполнении конкретных шагов.
+- `agent_docs/adr.md` — обоснование ключевых технических решений (Bricks Builder, Gravity Forms, n8n и др.).
+- `agent_docs/development-history.md` — журнал итераций; смотреть последние 10 записей.
+
+## Стратегия и контент
+- `agent_docs/content-strategy.md` — SEO-кластеры, контент-план блога (10 статей), формулы CTA, 7 столпов позиционирования, конкурентные преимущества.
+- `agent_docs/integrations.md` — AI Sales Factory: поток лидов WordPress → Битрикс24, модель скоринга, n8n автопубликация, JivoSite бот, nurture email-цепочка.
+- `agent_docs/blueprint.md` — исходный ТЗ-документ с полным контентом всех страниц. Читать при написании текстов для конкретных страниц.
 
 ## Правила и гайды
-- `agent_docs/guides/dod.md` — критерии завершенности (DoD).
-- `agent_docs/guides/environment-setup.md` — настройка окружения; применять при инициализации проекта.
-- `agent_docs/guides/logging.md` — логирование скриптов/интеграций.
+- `agent_docs/guides/dod.md` — критерии завершённости задачи.
+- `agent_docs/guides/environment-setup.md` — настройка .env, .cursorignore, .vscode.
+- `agent_docs/guides/logging.md` — логирование скриптов и интеграций.
 - `agent_docs/guides/archiving-and-temp.md` — архивация и временные файлы.
 
 ## Шаблоны
