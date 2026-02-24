@@ -9,6 +9,18 @@
 
 ## Записи
 
+### 2026-02-24 — Фаза 2: домен, SSL, аналитика, Bitrix24
+
+- Домен: pass24pro.ru → 194.87.140.245 (DNS подтверждён)
+- SSL: Let's Encrypt сертификат (certbot), автообновление настроено, HSTS включён
+- WP URL переключён на https://pass24pro.ru, все ссылки в БД заменены
+- GTM-N5S4CR6T подключён через плагин GTM4WP (проверено: код в HTML)
+- Яндекс.Метрика 106989472 — прямой код в head через functions.php
+- Bitrix24: mu-plugin `pass24-bitrix24.php` — CF7 → crm.lead.add (тест: лид ID 2)
+- UTM-параметры сохраняются в куки 30 дней, передаются в CRM
+- REST API endpoint: POST /wp-json/pass24/v1/lead (для калькулятора ROI)
+- CF7 события → dataLayer (GTM) + Яндекс.Метрика цель demo_request
+
 ### 2026-02-23 — Интеграция blueprint и подготовка плана реализации
 
 - Изучён и интегрирован `PASS24_Website_Blueprint_RU.md` (ТЗ на сайт)
