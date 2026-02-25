@@ -5,31 +5,35 @@
 ## Архитектура передачи лидов
 
 ```
-┌──────────────────────────────────────────┐
-│  WORDPRESS                                │
-│                                           │
-│  Gravity Forms + Flamix Bitrix24          │
-│  JivoSite чат                            │
-│  Калькулятор ROI (JS → webhook)           │
-│  Конфигуратор решений (JS → webhook)      │
-│                                           │
-│    │  POST webhook                        │
-│    ▼                                      │
-│  crm.lead.add (Битрикс24 Inbound Webhook) │
-└──────────────┬───────────────────────────┘
-               ▼
-┌──────────────────────────────────────────┐
-│  БИТРИКС24 CRM                            │
-│                                           │
-│  Лид → Автоскоринг (UF_CRM_LEAD_SCORE)   │
-│                                           │
-│  Скор > 70  → Сделка → Менеджер          │
-│  Скор 30–70 → Nurture email-цепочка      │
-│  Скор < 30  → Маркетинговая автоматизация│
-│                                           │
-│  Воронка: Новый → Квалифицирован → Демо  │
-│           → КП → Переговоры → Победа/Поражение
-└──────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────┐
+│  WORDPRESS                                             │
+│                                                        │
+│  Gravity Forms + Flamix Bitrix24                       │
+│  JivoSite чат                                         │
+│  Калькулятор ROI (JS → webhook)                        │
+│  Конфигуратор решений (JS → webhook)                   │
+│                                                        │
+│  mu-plugin pass24-ai-factory.php (fire-and-forget):    │
+│    POST → crm.lead.add (Битрикс24)                     │
+│    POST → AI_FACTORY_URL/api/webhooks/lead             │
+└──────────────┬──────────────────────┬─────────────────┘
+               ▼                      ▼
+┌──────────────────────┐  ┌───────────────────────────────┐
+│  БИТРИКС24 CRM        │  │  PASS24 AI SALES FACTORY       │
+│                       │  │  (pass24-ai-sales, Phase 3)    │
+│  Лид → Скоринг        │  │                               │
+│  (UF_CRM_LEAD_SCORE)  │  │  Lead Generator → Lead Scorer  │
+│                       │  │  → EventBus → Nurturing Agent  │
+│  Скор > 70  → Сделка  │  │                               │
+│  Скор 30–70 → Nurture │  │  Content: ContentWriter →      │
+│  Скор < 30  → Marketing│  │  SEO Optimizer →              │
+│                       │  │  POST /wp/v2/posts (draft)     │
+│  Воронка: Новый →     │  │  → Telegram HITL → publish     │
+│  Квалифицирован →     │  │                               │
+│  Демо → КП →          │  │  Синхронизация с Битрикс24:    │
+│  Переговоры →         │  │  двусторонняя (Phase 3.4)      │
+│  Победа/Поражение     │  │                               │
+└───────────────────────┘  └───────────────────────────────┘
 ```
 
 ## Модель скоринга лидов
@@ -71,9 +75,12 @@ POST /wp/v2/posts
   "categories": [id_категории],
   "featured_media": id_медиа,
   "meta": {
-    "rank_math_focus_keyword": "целевой ключ",
-    "rank_math_description": "SEO мета-описание"
+    "rank_math_title": "SEO-заголовок | PASS24",
+    "rank_math_description": "SEO мета-описание (100–165 символов)",
+    "rank_math_focus_keyword": "целевой ключ"
   }
+  // Поля зарегистрированы в mu-plugins/pass24-ai-factory.php через register_post_meta()
+  // AI Sales Factory отправляет rank_math_title + rank_math_description автоматически
 }
 ```
 
@@ -85,7 +92,14 @@ Content-Disposition: attachment; filename="image.jpg"
 [binary content]
 ```
 
-## n8n Workflow — автопубликация контента
+## Публикация контента (AI Sales Factory → WordPress)
+
+> **ADR-012:** n8n для публикации контента заменён на pass24-ai-sales.
+> Pipeline: ContentWriter → SEO Optimizer → `POST /wp/v2/posts` (status: draft)
+> → Telegram HITL (approve) → `PATCH /wp/v2/posts/{id}` (status: publish).
+> Поля Rank Math заполняются автоматически из SEO-данных.
+
+## n8n Workflow — (устарело, см. ADR-012)
 
 ```
 Триггер: Еженедельный cron (понедельник 09:00)
