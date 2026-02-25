@@ -54,10 +54,27 @@ function pass24_enqueue_assets(): void {
 		null
 	);
 
+	// Стили секций (табы, карусель, маркиз логотипов, таблица сравнения)
+	wp_enqueue_style(
+		'pass24-sections',
+		PASS24_CHILD_URI . '/assets/css/sections.css',
+		[ 'pass24-design-system' ],
+		PASS24_CHILD_VERSION
+	);
+
 	// Sticky CTA-бар
 	wp_enqueue_script(
 		'pass24-sticky-cta',
 		PASS24_CHILD_URI . '/assets/js/sticky-cta.js',
+		[],
+		PASS24_CHILD_VERSION,
+		true
+	);
+
+	// Интерактивные компоненты (табы, карусель, ротатор отзывов)
+	wp_enqueue_script(
+		'pass24-components',
+		PASS24_CHILD_URI . '/assets/js/components.js',
 		[],
 		PASS24_CHILD_VERSION,
 		true
