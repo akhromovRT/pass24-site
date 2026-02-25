@@ -1,0 +1,466 @@
+/* ==========================================================================
+   PASS24 Design System
+   Источник: agent_docs/blueprint.md v2.0, раздел 6 «Дизайн-система»
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. CSS Custom Properties (токены)
+   -------------------------------------------------------------------------- */
+
+:root {
+  /* Основные цвета */
+  --p24-primary: #2563EB;
+  --p24-primary-dark: #1D4ED8;
+  --p24-primary-light: #DBEAFE;
+
+  /* Акцент */
+  --p24-accent: #10B981;
+  --p24-accent-dark: #059669;
+
+  /* Нейтральные */
+  --p24-text-primary: #111827;
+  --p24-text-secondary: #6B7280;
+  --p24-bg-primary: #FFFFFF;
+  --p24-bg-secondary: #F9FAFB;
+  --p24-bg-dark: #111827;
+
+  /* Статусы */
+  --p24-success: #10B981;
+  --p24-warning: #F59E0B;
+  --p24-error: #EF4444;
+
+  /* Границы */
+  --p24-border: #E5E7EB;
+  --p24-border-light: #F3F4F6;
+
+  /* Типографика */
+  --p24-font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+
+  /* Скругления */
+  --p24-radius-sm: 6px;
+  --p24-radius-md: 8px;
+  --p24-radius-lg: 12px;
+  --p24-radius-xl: 16px;
+
+  /* Тени */
+  --p24-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --p24-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --p24-shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.12);
+
+  /* Переходы */
+  --p24-transition: 0.2s ease;
+  --p24-transition-slow: 0.3s ease;
+}
+
+/* --------------------------------------------------------------------------
+   2. Типографика
+   -------------------------------------------------------------------------- */
+
+body {
+  font-family: var(--p24-font-family);
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--p24-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Заголовки — классы для Bricks Builder */
+
+.p24-h1 {
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--p24-text-primary);
+  letter-spacing: -0.02em;
+}
+
+.p24-h2 {
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--p24-text-primary);
+  letter-spacing: -0.01em;
+}
+
+.p24-h3 {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--p24-text-primary);
+}
+
+.p24-h4 {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--p24-text-primary);
+}
+
+.p24-subtitle {
+  font-size: 20px;
+  line-height: 1.5;
+  color: var(--p24-text-secondary);
+  max-width: 600px;
+}
+
+.p24-small {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--p24-text-secondary);
+}
+
+/* Адаптив */
+
+@media (max-width: 768px) {
+  .p24-h1 { font-size: 32px; }
+  .p24-h2 { font-size: 28px; }
+  .p24-h3 { font-size: 20px; }
+  .p24-h4 { font-size: 18px; }
+  .p24-subtitle { font-size: 17px; }
+}
+
+/* --------------------------------------------------------------------------
+   3. Кнопки
+   -------------------------------------------------------------------------- */
+
+.p24-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: var(--p24-radius-md);
+  font-family: var(--p24-font-family);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all var(--p24-transition);
+}
+
+.p24-btn-primary {
+  background: var(--p24-primary);
+  color: #FFFFFF;
+  border-color: var(--p24-primary);
+}
+
+.p24-btn-primary:hover {
+  background: var(--p24-primary-dark);
+  border-color: var(--p24-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--p24-shadow-sm);
+}
+
+.p24-btn-secondary {
+  background: transparent;
+  color: var(--p24-primary);
+  border-color: var(--p24-primary);
+}
+
+.p24-btn-secondary:hover {
+  background: var(--p24-primary-light);
+}
+
+.p24-btn-ghost {
+  background: transparent;
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+.p24-btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.p24-btn-accent {
+  background: var(--p24-accent);
+  color: #FFFFFF;
+  border-color: var(--p24-accent);
+}
+
+.p24-btn-accent:hover {
+  background: var(--p24-accent-dark);
+  border-color: var(--p24-accent-dark);
+}
+
+.p24-btn-lg {
+  padding: 16px 36px;
+  font-size: 18px;
+}
+
+.p24-btn-sm {
+  padding: 10px 20px;
+  font-size: 14px;
+}
+
+/* --------------------------------------------------------------------------
+   4. Карточки
+   -------------------------------------------------------------------------- */
+
+.p24-card {
+  background: var(--p24-bg-primary);
+  border: 1px solid var(--p24-border);
+  border-radius: var(--p24-radius-lg);
+  padding: 32px;
+  box-shadow: var(--p24-shadow-sm);
+  transition: all var(--p24-transition-slow);
+}
+
+.p24-card:hover {
+  box-shadow: var(--p24-shadow-md);
+  transform: translateY(-2px);
+}
+
+.p24-card-dark {
+  background: var(--p24-bg-dark);
+  border-color: transparent;
+  color: #FFFFFF;
+}
+
+.p24-card-dark .p24-small,
+.p24-card-dark .p24-subtitle {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* --------------------------------------------------------------------------
+   5. Бейджи доверия
+   -------------------------------------------------------------------------- */
+
+.p24-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--p24-bg-secondary);
+  border-radius: var(--p24-radius-md);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--p24-text-primary);
+}
+
+.p24-badge-primary {
+  background: var(--p24-primary-light);
+  color: var(--p24-primary);
+}
+
+.p24-badge-accent {
+  background: #D1FAE5;
+  color: var(--p24-accent-dark);
+}
+
+.p24-badge-dark {
+  background: rgba(255, 255, 255, 0.1);
+  color: #FFFFFF;
+}
+
+/* --------------------------------------------------------------------------
+   6. Полоса доверия (логотипы клиентов)
+   -------------------------------------------------------------------------- */
+
+.p24-logo-strip {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  overflow: hidden;
+  padding: 24px 0;
+}
+
+.p24-logo-strip img {
+  height: 36px;
+  width: auto;
+  opacity: 0.6;
+  filter: grayscale(100%);
+  transition: all var(--p24-transition);
+}
+
+.p24-logo-strip img:hover {
+  opacity: 1;
+  filter: grayscale(0%);
+}
+
+/* --------------------------------------------------------------------------
+   7. Статистика (цифры)
+   -------------------------------------------------------------------------- */
+
+.p24-stats {
+  display: flex;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+
+.p24-stat-value {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--p24-primary);
+  line-height: 1;
+}
+
+.p24-stat-label {
+  font-size: 14px;
+  color: var(--p24-text-secondary);
+  margin-top: 4px;
+}
+
+@media (max-width: 768px) {
+  .p24-stats { gap: 24px; }
+  .p24-stat-value { font-size: 28px; }
+}
+
+/* --------------------------------------------------------------------------
+   8. Секции страницы
+   -------------------------------------------------------------------------- */
+
+.p24-section {
+  padding: 80px 0;
+}
+
+.p24-section-sm {
+  padding: 48px 0;
+}
+
+.p24-section-dark {
+  background: var(--p24-bg-dark);
+  color: #FFFFFF;
+}
+
+.p24-section-gray {
+  background: var(--p24-bg-secondary);
+}
+
+.p24-section-header {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 48px;
+}
+
+@media (max-width: 768px) {
+  .p24-section { padding: 48px 0; }
+  .p24-section-header { margin-bottom: 32px; }
+}
+
+/* --------------------------------------------------------------------------
+   9. Sticky CTA-бар
+   -------------------------------------------------------------------------- */
+
+.p24-sticky-cta {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background: var(--p24-bg-dark);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  transform: translateY(100%);
+  transition: transform var(--p24-transition-slow);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.15);
+}
+
+.p24-sticky-cta.is-visible {
+  transform: translateY(0);
+}
+
+.p24-sticky-cta__phone {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 15px;
+  text-decoration: none;
+}
+
+.p24-sticky-cta__phone:hover {
+  color: #FFFFFF;
+}
+
+.p24-sticky-cta__divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* --------------------------------------------------------------------------
+   10. Чеклист под CTA (✓ Развёртывание за 1 час ✓ Обучение включено ...)
+   -------------------------------------------------------------------------- */
+
+.p24-cta-checklist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin-top: 16px;
+}
+
+.p24-cta-checklist__item {
+  font-size: 14px;
+  color: var(--p24-text-secondary);
+}
+
+.p24-cta-checklist__item::before {
+  content: '\2713';
+  color: var(--p24-accent);
+  font-weight: 700;
+  margin-right: 6px;
+}
+
+/* На тёмном фоне */
+.p24-section-dark .p24-cta-checklist__item {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* --------------------------------------------------------------------------
+   11. Формы (совместимость с Gravity Forms)
+   -------------------------------------------------------------------------- */
+
+.gform_wrapper input[type="text"],
+.gform_wrapper input[type="email"],
+.gform_wrapper input[type="tel"],
+.gform_wrapper select,
+.gform_wrapper textarea {
+  font-family: var(--p24-font-family);
+  font-size: 16px;
+  border: 1px solid var(--p24-border);
+  border-radius: var(--p24-radius-md);
+  padding: 12px 16px;
+  transition: border-color var(--p24-transition);
+}
+
+.gform_wrapper input:focus,
+.gform_wrapper select:focus,
+.gform_wrapper textarea:focus {
+  border-color: var(--p24-primary);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--p24-primary-light);
+}
+
+.gform_wrapper .gform_button {
+  background: var(--p24-primary);
+  color: #FFFFFF;
+  padding: 14px 28px;
+  border: none;
+  border-radius: var(--p24-radius-md);
+  font-family: var(--p24-font-family);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--p24-transition);
+}
+
+.gform_wrapper .gform_button:hover {
+  background: var(--p24-primary-dark);
+}
+
+/* Многошаговая форма: прогресс-бар */
+.gform_wrapper .gf_progressbar {
+  background: var(--p24-border-light);
+  border-radius: 4px;
+  height: 6px;
+}
+
+.gform_wrapper .gf_progressbar_percentage {
+  background: var(--p24-primary);
+  border-radius: 4px;
+  height: 6px;
+  transition: width var(--p24-transition-slow);
+}
