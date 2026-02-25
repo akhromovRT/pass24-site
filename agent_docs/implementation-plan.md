@@ -237,11 +237,21 @@
 - [ ] Менять Hero-заголовок под сегмент
 - [ ] Менять CTA под сегмент
 
-### 5.3 n8n — автопубликация контента
-- [ ] Развернуть n8n (self-hosted или cloud)
-- [ ] Настроить workflow: Cron → Claude API (генерация статьи) → Pexels (изображение) → WordPress REST API (`/wp/v2/posts`, status: draft)
-- [ ] Уведомление контент-менеджеру в Битрикс24 на ревью
-- [ ] Создать Application Password в WordPress для API-доступа
+### 5.3 Подключение AI Sales Factory (заменяет n8n для контента)
+
+> **ADR-012:** публикация контента и скоринг лидов переходят к pass24-ai-sales.
+> n8n для этих задач не разворачивать.
+
+- [ ] Создать Application Password в WordPress: Пользователи → Профиль → App Passwords
+      Имя: `pass24-ai-sales`, права: Editor. Пароль → в .env AI Factory (`WORDPRESS_PASSWORD`)
+- [ ] Добавить в `wp-config.php` на сервере:
+      `define( 'AI_FACTORY_URL', 'https://api.pass24.online' );`
+- [ ] Загрузить `mu-plugins/pass24-ai-factory.php` в wp-content/mu-plugins/ на сервере
+- [ ] Проверить регистрацию Rank Math полей:
+      `curl -s https://pass24pro.ru/wp-json/wp/v2/posts/schema | python3 -m json.tool | grep rank_math`
+- [ ] Проверить, что форма демо отправляет лид в AI Factory:
+      выполнить тестовую отправку, проверить `/api/webhooks/lead` в логах AI Factory
+- [ ] Уведомление контент-менеджеру — через Telegram HITL в AI Factory (уже встроено)
 
 ### 5.4 Email nurture-цепочка (Битрикс24 / Unisender)
 - [ ] День 0: приветствие + «Что такое облачная СКУД»
