@@ -151,15 +151,29 @@ add_filter( 'tiny_mce_plugins', function ( array $plugins ): array {
 	return array_diff( $plugins, [ 'wpemoji' ] );
 } );
 
-// Убрать query strings из статики (?ver=) для лучшего кэширования CDN
-add_filter( 'script_loader_src', 'pass24_remove_version_query', 15 );
-add_filter( 'style_loader_src', 'pass24_remove_version_query', 15 );
+// Cache busting: наши файлы → filemtime, WP core → скрыть версию
+add_filter( 'script_loader_src', 'pass24_smart_version', 15 );
+add_filter( 'style_loader_src', 'pass24_smart_version', 15 );
 
-function pass24_remove_version_query( string $src ): string {
-	if ( strpos( $src, '?ver=' ) !== false ) {
-		$src = remove_query_arg( 'ver', $src );
+function pass24_smart_version( string $src ): string {
+	if ( strpos( $src, '?ver=' ) === false ) {
+		return $src;
 	}
-	return $src;
+
+	// Наши файлы темы — filemtime для автоматического cache bust
+	if ( strpos( $src, '/pass24-child/' ) !== false ) {
+		$file = str_replace(
+			PASS24_CHILD_URI,
+			PASS24_CHILD_DIR,
+			strtok( $src, '?' )
+		);
+		if ( file_exists( $file ) ) {
+			return add_query_arg( 'v', filemtime( $file ), remove_query_arg( 'ver', $src ) );
+		}
+	}
+
+	// Все остальные — убрать ?ver= (скрыть версию WP)
+	return remove_query_arg( 'ver', $src );
 }
 
 /* --------------------------------------------------------------------------
