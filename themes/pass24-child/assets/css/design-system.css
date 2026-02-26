@@ -590,3 +590,207 @@ body.page-slug-pricing .content-area {
     display: none;
   }
 }
+
+/* --------------------------------------------------------------------------
+   14. Footer
+   -------------------------------------------------------------------------- */
+
+.p24-footer {
+  background: var(--p24-bg-dark);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 15px;
+  line-height: 1.6;
+  padding-bottom: 64px; /* место для sticky CTA */
+}
+
+/* Скрыть дефолтный footer GP */
+.site-info {
+  display: none !important;
+}
+
+/* Основной блок */
+.p24-footer__main {
+  padding: 64px 0 48px;
+}
+
+.p24-footer__grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr 1.2fr;
+  gap: 40px;
+}
+
+/* Колонка «О компании» */
+.p24-footer__logo {
+  display: inline-block;
+  font-size: 22px;
+  font-weight: 800;
+  color: #FFFFFF;
+  text-decoration: none;
+  margin-bottom: 12px;
+}
+
+.p24-footer__logo:hover {
+  color: #FFFFFF;
+}
+
+.p24-footer__desc {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* Соцсети */
+.p24-footer__socials {
+  display: flex;
+  gap: 12px;
+}
+
+.p24-footer__socials a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.6);
+  transition: all var(--p24-transition);
+}
+
+.p24-footer__socials a:hover {
+  background: var(--p24-primary);
+  color: #FFFFFF;
+}
+
+/* Заголовки колонок */
+.p24-footer__heading {
+  font-size: 15px;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Ссылки */
+.p24-footer__links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.p24-footer__links li {
+  margin-bottom: 10px;
+}
+
+.p24-footer__links a {
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  transition: color var(--p24-transition);
+}
+
+.p24-footer__links a:hover {
+  color: #FFFFFF;
+}
+
+/* Кнопка в контактах */
+.p24-footer__cta {
+  margin-top: 16px;
+}
+
+/* Нижняя полоса */
+.p24-footer__bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 20px 0;
+}
+
+.p24-footer__bottom-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.p24-footer__copy {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.p24-footer__legal {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.p24-footer__legal a {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.4);
+  text-decoration: none;
+  transition: color var(--p24-transition);
+}
+
+.p24-footer__legal a:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.p24-footer__registry {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.3);
+  padding-left: 24px;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Адаптив footer */
+@media (max-width: 1024px) {
+  .p24-footer__grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .p24-footer__col--about {
+    grid-column: 1 / -1;
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .p24-footer__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  .p24-footer__col--about {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 576px) {
+  .p24-footer__main {
+    padding: 48px 0 32px;
+  }
+
+  .p24-footer__grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .p24-footer__col--about {
+    max-width: 100%;
+  }
+
+  .p24-footer__bottom-inner {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .p24-footer__legal {
+    justify-content: center;
+  }
+
+  .p24-footer__registry {
+    border-left: none;
+    padding-left: 0;
+  }
+}
