@@ -11,7 +11,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'PASS24_CHILD_VERSION', '1.0.0' );
+define( 'PASS24_CHILD_VERSION', '1.1.0' );
 define( 'PASS24_CHILD_DIR', get_stylesheet_directory() );
 define( 'PASS24_CHILD_URI', get_stylesheet_directory_uri() );
 
@@ -163,7 +163,20 @@ function pass24_remove_version_query( string $src ): string {
 }
 
 /* --------------------------------------------------------------------------
-   4. Поддержка Bricks Builder
+   4. Body-класс с slug страницы (для CSS-таргетинга)
+   -------------------------------------------------------------------------- */
+
+add_filter( 'body_class', 'pass24_page_slug_body_class' );
+
+function pass24_page_slug_body_class( array $classes ): array {
+	if ( is_page() ) {
+		$classes[] = 'page-slug-' . get_post_field( 'post_name', get_queried_object_id() );
+	}
+	return $classes;
+}
+
+/* --------------------------------------------------------------------------
+   5. Поддержка Bricks Builder
    -------------------------------------------------------------------------- */
 
 // Добавить CSS-переменные дизайн-системы в редактор Bricks

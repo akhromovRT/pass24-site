@@ -63,6 +63,12 @@ body {
   color: var(--p24-text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Скрыть горизонтальный скролл от breakout-секций */
+.site {
+  overflow-x: hidden;
 }
 
 /* Заголовки — классы для Bricks Builder */
@@ -312,6 +318,35 @@ body {
    8. Секции страницы
    -------------------------------------------------------------------------- */
 
+/*
+ * Полноширинный layout для наших шаблонов:
+ * GP .grid-container → 100% ширина, p24-container → 1200px центрирует контент.
+ * Используем body-классы WordPress: .home (главная), .page-template-default (страницы).
+ */
+body.home .site.grid-container,
+body.page-slug-pricing .site.grid-container {
+  max-width: 100%;
+  padding: 0;
+}
+
+body.home .site-content,
+body.page-slug-pricing .site-content {
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+body.home .site-main,
+body.page-slug-pricing .site-main {
+  margin: 0 !important;
+  max-width: 100% !important;
+}
+
+body.home .content-area,
+body.page-slug-pricing .content-area {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
 .p24-section {
   padding: 80px 0;
 }
@@ -466,7 +501,19 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   12. Адаптивные сетки (утилиты)
+   12. Контейнер
+   -------------------------------------------------------------------------- */
+
+.p24-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+   13. Адаптивные сетки (утилиты)
    -------------------------------------------------------------------------- */
 
 .p24-grid-3 {
