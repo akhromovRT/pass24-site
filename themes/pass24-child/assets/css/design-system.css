@@ -464,3 +464,82 @@ body {
   height: 6px;
   transition: width var(--p24-transition-slow);
 }
+
+/* --------------------------------------------------------------------------
+   12. Адаптивные сетки (утилиты)
+   -------------------------------------------------------------------------- */
+
+.p24-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.p24-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.p24-flex-row {
+  display: flex;
+  gap: 48px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.p24-flex-row > * {
+  flex: 1;
+  min-width: 280px;
+}
+
+@media (max-width: 768px) {
+  .p24-grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .p24-grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .p24-flex-row {
+    gap: 24px;
+  }
+
+  .p24-flex-row > * {
+    min-width: 100%;
+  }
+}
+
+/* Обёртка для адаптивных таблиц */
+.p24-table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 -24px;
+  padding: 0 24px;
+}
+
+@media (max-width: 768px) {
+  .p24-table-responsive {
+    margin: 0 -16px;
+    padding: 0 16px;
+  }
+}
+
+/* Адаптивность контейнера */
+@media (max-width: 576px) {
+  .p24-container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .p24-sticky-cta {
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 16px;
+  }
+
+  .p24-sticky-cta__divider {
+    display: none;
+  }
+}

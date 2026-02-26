@@ -38,10 +38,10 @@ get_header();
 			     ============================================================ -->
 
 			<section class="p24-section" id="hero" style="padding-top: 100px;">
-				<div class="p24-container" style="display: flex; align-items: center; gap: 48px; flex-wrap: wrap;">
+				<div class="p24-container p24-flex-row">
 
 					<!-- Левая колонка: текст -->
-					<div style="flex: 1; min-width: 320px;">
+					<div>
 						<div style="margin-bottom: 24px;">
 							<span class="p24-badge p24-badge-primary">&#127942; Лауреат премии &laquo;Новатор Москвы&raquo;</span>
 							<span class="p24-badge" style="margin-left: 8px;">Реестр российского ПО</span>
@@ -71,7 +71,7 @@ get_header();
 					</div>
 
 					<!-- Правая колонка: медиа -->
-					<div style="flex: 1; min-width: 320px;">
+					<div>
 						<img src="<?php echo esc_url( PASS24_CHILD_URI . '/assets/img/hero-dashboard.webp' ); ?>"
 						     alt="Интерфейс PASS24 — облачная система контроля доступа"
 						     style="width: 100%; border-radius: var(--p24-radius-lg); box-shadow: var(--p24-shadow-lg);"
@@ -153,7 +153,7 @@ get_header();
 						<h2 class="p24-h2">Знакомые проблемы?</h2>
 					</div>
 
-					<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+					<div class="p24-grid-3">
 						<div class="p24-card">
 							<div style="font-size: 40px; margin-bottom: 16px;">&#128221;</div>
 							<h3 class="p24-h4" style="margin-bottom: 12px;">Охрана записывает номера вручную</h3>
@@ -198,65 +198,65 @@ get_header();
 						<div class="p24-tabs__panels">
 
 							<div class="p24-tabs__panel is-active" id="product-0" role="tabpanel">
-								<div style="display: flex; gap: 40px; align-items: center; flex-wrap: wrap;">
-									<div style="flex: 1; min-width: 280px;">
+								<div class="p24-flex-row">
+									<div>
 										<h3 class="p24-h3" style="margin-bottom: 12px;">Мобильное бюро пропусков</h3>
 										<p style="color: var(--p24-text-secondary); margin-bottom: 16px;">Заказ электронного пропуска за&nbsp;5&nbsp;секунд через мобильное приложение. Гость получает QR-код в&nbsp;WhatsApp или Telegram&nbsp;&mdash; без установки приложения.</p>
 										<span class="p24-badge p24-badge-accent">5 секунд на оформление пропуска</span>
 									</div>
-									<div style="flex: 1; min-width: 280px;">
+									<div>
 										<img src="/wp-content/uploads/products/mobile-pass.webp" alt="Мобильное бюро пропусков PASS24" style="width: 100%; border-radius: var(--p24-radius-lg);" loading="lazy" onerror="this.parentElement.style.display='none'">
 									</div>
 								</div>
 							</div>
 
 							<div class="p24-tabs__panel" id="product-1" role="tabpanel">
-								<div style="display: flex; gap: 40px; align-items: center; flex-wrap: wrap;">
-									<div style="flex: 1; min-width: 280px;">
+								<div class="p24-flex-row">
+									<div>
 										<h3 class="p24-h3" style="margin-bottom: 12px;">PASS24.auto</h3>
 										<p style="color: var(--p24-text-secondary); margin-bottom: 16px;">Распознаёт госномера с&nbsp;точностью 98%&nbsp;&mdash; даже в&nbsp;полной темноте. Шлагбаум открывается автоматически для зарегистрированных авто.</p>
 										<span class="p24-badge p24-badge-accent">98% точность распознавания</span>
 									</div>
-									<div style="flex: 1; min-width: 280px;">
+									<div>
 										<img src="/wp-content/uploads/products/pass24-auto.webp" alt="PASS24.auto — распознавание номеров" style="width: 100%; border-radius: var(--p24-radius-lg);" loading="lazy" onerror="this.parentElement.style.display='none'">
 									</div>
 								</div>
 							</div>
 
 							<div class="p24-tabs__panel" id="product-2" role="tabpanel">
-								<div style="display: flex; gap: 40px; align-items: center; flex-wrap: wrap;">
-									<div style="flex: 1; min-width: 280px;">
+								<div class="p24-flex-row">
+									<div>
 										<h3 class="p24-h3" style="margin-bottom: 12px;">PASS24.Key</h3>
 										<p style="color: var(--p24-text-secondary); margin-bottom: 16px;">Превращает смартфон в&nbsp;некопируемый ключ доступа. BLE и&nbsp;NFC&nbsp;HCE&nbsp;&mdash; привязан к&nbsp;конкретному устройству.</p>
 										<span class="p24-badge p24-badge-accent">0 потерянных карт и брелоков</span>
 									</div>
-									<div style="flex: 1; min-width: 280px;">
+									<div>
 										<img src="/wp-content/uploads/products/pass24-key.webp" alt="PASS24.Key — цифровой ключ" style="width: 100%; border-radius: var(--p24-radius-lg);" loading="lazy" onerror="this.parentElement.style.display='none'">
 									</div>
 								</div>
 							</div>
 
 							<div class="p24-tabs__panel" id="product-3" role="tabpanel">
-								<div style="display: flex; gap: 40px; align-items: center; flex-wrap: wrap;">
-									<div style="flex: 1; min-width: 280px;">
+								<div class="p24-flex-row">
+									<div>
 										<h3 class="p24-h3" style="margin-bottom: 12px;">PASS24.Parking</h3>
 										<p style="color: var(--p24-text-secondary); margin-bottom: 16px;">Автоматически распределяет квоты парковочных мест по&nbsp;адресам. Контроль заполненности, аналитика использования.</p>
 										<span class="p24-badge p24-badge-accent">Автоматический контроль квот</span>
 									</div>
-									<div style="flex: 1; min-width: 280px;">
+									<div>
 										<img src="/wp-content/uploads/products/pass24-parking.webp" alt="PASS24.Parking — управление парковкой" style="width: 100%; border-radius: var(--p24-radius-lg);" loading="lazy" onerror="this.parentElement.style.display='none'">
 									</div>
 								</div>
 							</div>
 
 							<div class="p24-tabs__panel" id="product-4" role="tabpanel">
-								<div style="display: flex; gap: 40px; align-items: center; flex-wrap: wrap;">
-									<div style="flex: 1; min-width: 280px;">
+								<div class="p24-flex-row">
+									<div>
 										<h3 class="p24-h3" style="margin-bottom: 12px;">Аналитика и отчёты</h3>
 										<p style="color: var(--p24-text-secondary); margin-bottom: 16px;">Все события в&nbsp;одном окне. Журнал проходов, статистика нагрузки, отчёты для&nbsp;УК и&nbsp;собственников.</p>
 										<span class="p24-badge p24-badge-accent">Все данные в реальном времени</span>
 									</div>
-									<div style="flex: 1; min-width: 280px;">
+									<div>
 										<img src="/wp-content/uploads/products/analytics.webp" alt="PASS24 — аналитика и отчёты" style="width: 100%; border-radius: var(--p24-radius-lg);" loading="lazy" onerror="this.parentElement.style.display='none'">
 									</div>
 								</div>
@@ -290,7 +290,7 @@ get_header();
 						<div class="p24-tabs__panels">
 
 							<div class="p24-tabs__panel is-active" id="role-0" role="tabpanel">
-								<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 700px;">
+								<div class="p24-grid-2" style="max-width: 700px;">
 									<div class="p24-card" style="padding: 20px;"><strong>Пропуск за 5 секунд</strong><p class="p24-small" style="margin-top: 4px;">Заказ без звонка охране</p></div>
 									<div class="p24-card" style="padding: 20px;"><strong>Пропуск в мессенджер</strong><p class="p24-small" style="margin-top: 4px;">Отправка гостю в WhatsApp или Telegram</p></div>
 									<div class="p24-card" style="padding: 20px;"><strong>Смартфон = ключ</strong><p class="p24-small" style="margin-top: 4px;">Вместо карт и брелоков</p></div>
@@ -299,7 +299,7 @@ get_header();
 							</div>
 
 							<div class="p24-tabs__panel" id="role-1" role="tabpanel">
-								<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 700px;">
+								<div class="p24-grid-2" style="max-width: 700px;">
 									<div class="p24-card" style="padding: 20px;"><strong>Единый дашборд</strong><p class="p24-small" style="margin-top: 4px;">Все объекты в одном окне</p></div>
 									<div class="p24-card" style="padding: 20px;"><strong>Журнал и аналитика</strong><p class="p24-small" style="margin-top: 4px;">Полная история событий</p></div>
 									<div class="p24-card" style="padding: 20px;"><strong>Меньше нагрузки на охрану</strong><p class="p24-small" style="margin-top: 4px;">Автоматизация рутины</p></div>
@@ -308,7 +308,7 @@ get_header();
 							</div>
 
 							<div class="p24-tabs__panel" id="role-2" role="tabpanel">
-								<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 700px;">
+								<div class="p24-grid-2" style="max-width: 700px;">
 									<div class="p24-card" style="padding: 20px;"><strong>Автоматическая проверка</strong><p class="p24-small" style="margin-top: 4px;">Без ручных журналов</p></div>
 									<div class="p24-card" style="padding: 20px;"><strong>Мгновенные уведомления</strong><p class="p24-small" style="margin-top: 4px;">О нарушениях и инцидентах</p></div>
 									<div class="p24-card" style="padding: 20px;"><strong>Правила по времени и зонам</strong><p class="p24-small" style="margin-top: 4px;">Чёткие правила доступа</p></div>
@@ -374,6 +374,7 @@ get_header();
 						<h2 class="p24-h2">Облачная СКУД экономит до&nbsp;40% по&nbsp;сравнению с&nbsp;локальной</h2>
 					</div>
 
+					<div class="p24-table-responsive">
 					<table class="p24-compare-table">
 						<thead>
 							<tr>
@@ -393,6 +394,7 @@ get_header();
 							<tr><td>Привязка к вендору</td><td>Жёсткая</td><td>Open API</td></tr>
 						</tbody>
 					</table>
+					</div><!-- /.p24-table-responsive -->
 
 					<div style="text-align: center; margin-top: 32px;">
 						<a href="/resources/roi-calculator/" class="p24-btn p24-btn-primary">Рассчитать экономию для вашего объекта</a>
