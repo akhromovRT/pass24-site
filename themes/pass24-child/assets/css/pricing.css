@@ -303,3 +303,34 @@
   line-height: 1.6;
   color: var(--p24-text-secondary);
 }
+
+/* --------------------------------------------------------------------------
+   6. Блок преимуществ (3 колонки)
+   -------------------------------------------------------------------------- */
+
+.p24-benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .p24-benefits-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+.p24-benefit {
+  text-align: center;
+}
+
+.p24-benefit svg {
+  margin-bottom: 16px;
+}
+
+.p24-benefit .p24-h4 {
+  margin-bottom: 8px;
+}
