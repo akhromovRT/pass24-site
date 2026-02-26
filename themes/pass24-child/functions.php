@@ -79,6 +79,24 @@ function pass24_enqueue_assets(): void {
 		PASS24_CHILD_VERSION,
 		true
 	);
+
+	// Страница тарифов — загружать только на /pricing/
+	if ( is_page( 'pricing' ) || is_page( 'tarify' ) ) {
+		wp_enqueue_style(
+			'pass24-pricing',
+			PASS24_CHILD_URI . '/assets/css/pricing.css',
+			[ 'pass24-design-system' ],
+			PASS24_CHILD_VERSION
+		);
+
+		wp_enqueue_script(
+			'pass24-pricing',
+			PASS24_CHILD_URI . '/assets/js/pricing.js',
+			[],
+			PASS24_CHILD_VERSION,
+			true
+		);
+	}
 }
 
 /* --------------------------------------------------------------------------
