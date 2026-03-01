@@ -124,6 +124,17 @@ defined( 'ABSPATH' ) || exit;
 
 <?php do_action( 'generate_after_footer' ); ?>
 
+<!-- Sticky CTA-бар (глобальный, все страницы) -->
+<div class="p24-sticky-cta" id="p24-sticky-cta">
+	<a href="/demo/" class="p24-btn p24-btn-primary p24-btn-sm">
+		Попробовать бесплатно — 14 дней
+	</a>
+	<span class="p24-sticky-cta__divider"></span>
+	<a href="tel:+74951234567" class="p24-sticky-cta__phone">
+		+7 (495) XXX-XX-XX
+	</a>
+</div>
+
 <?php wp_footer(); ?>
 
 </body>

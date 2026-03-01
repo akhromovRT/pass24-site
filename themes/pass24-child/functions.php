@@ -62,6 +62,15 @@ function pass24_enqueue_assets(): void {
 		PASS24_CHILD_VERSION
 	);
 
+	// Header (мобильное меню, sticky shadow)
+	wp_enqueue_script(
+		'pass24-header',
+		PASS24_CHILD_URI . '/assets/js/header.js',
+		[],
+		PASS24_CHILD_VERSION,
+		true
+	);
+
 	// Sticky CTA-бар
 	wp_enqueue_script(
 		'pass24-sticky-cta',

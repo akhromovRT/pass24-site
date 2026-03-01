@@ -21,18 +21,6 @@ get_header();
 		<main class="site-main">
 
 
-			<!-- Sticky CTA-бар -->
-			<div class="p24-sticky-cta" id="p24-sticky-cta">
-				<a href="/demo/" class="p24-btn p24-btn-primary p24-btn-sm">
-					Попробовать бесплатно — 14 дней
-				</a>
-				<span class="p24-sticky-cta__divider"></span>
-				<a href="tel:+74951234567" class="p24-sticky-cta__phone">
-					+7 (495) XXX-XX-XX
-				</a>
-			</div>
-
-
 			<!-- ============================================================
 			     СЕКЦИЯ 1 — HERO
 			     ============================================================ -->
@@ -107,7 +95,7 @@ get_header();
 							for ( $i = 0; $i < 2; $i++ ) :
 								foreach ( $logos as $slug => $name ) :
 							?>
-								<img src="/wp-content/uploads/logos/<?php echo esc_attr( $slug ); ?>.svg"
+								<img src="<?php echo esc_url( PASS24_CHILD_URI . '/assets/img/logos/' . $slug . '.svg' ); ?>"
 								     alt="<?php echo esc_attr( $name ); ?>"
 								     loading="lazy"
 								     onerror="this.style.display='none'">
@@ -549,7 +537,7 @@ get_header();
 						];
 						foreach ( $integrations as $slug => $name ) :
 						?>
-						<img src="/wp-content/uploads/integrations/<?php echo esc_attr( $slug ); ?>.svg"
+						<img src="<?php echo esc_url( PASS24_CHILD_URI . '/assets/img/integrations/' . $slug . '.svg' ); ?>"
 						     alt="<?php echo esc_attr( $name ); ?>"
 						     loading="lazy"
 						     onerror="this.style.display='none'">
