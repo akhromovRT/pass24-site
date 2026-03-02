@@ -163,6 +163,69 @@ function pass24_enqueue_assets(): void {
 			'nonce' => wp_create_nonce( 'wp_rest' ),
 		] );
 	}
+
+	// Страницы продуктов /products/*
+	if ( is_page() && pass24_is_child_of_page( 'products' ) ) {
+		wp_enqueue_style(
+			'pass24-products',
+			PASS24_CHILD_URI . '/assets/css/products.css',
+			[ 'pass24-design-system' ],
+			PASS24_CHILD_VERSION
+		);
+	}
+
+	// Hub-страница продуктов /products/
+	if ( is_page( 'products' ) ) {
+		wp_enqueue_style(
+			'pass24-products',
+			PASS24_CHILD_URI . '/assets/css/products.css',
+			[ 'pass24-design-system' ],
+			PASS24_CHILD_VERSION
+		);
+	}
+
+	// Страницы решений /solutions/*
+	if ( is_page() && pass24_is_child_of_page( 'solutions' ) ) {
+		wp_enqueue_style(
+			'pass24-solutions',
+			PASS24_CHILD_URI . '/assets/css/solutions.css',
+			[ 'pass24-design-system' ],
+			PASS24_CHILD_VERSION
+		);
+
+		wp_enqueue_script(
+			'pass24-solutions',
+			PASS24_CHILD_URI . '/assets/js/solutions.js',
+			[],
+			PASS24_CHILD_VERSION,
+			true
+		);
+
+		wp_localize_script( 'pass24-solutions', 'wpApiSettings', [
+			'root'  => esc_url_raw( rest_url() ),
+			'nonce' => wp_create_nonce( 'wp_rest' ),
+		] );
+	}
+
+	// Hub-страница решений /solutions/
+	if ( is_page( 'solutions' ) ) {
+		wp_enqueue_style(
+			'pass24-solutions',
+			PASS24_CHILD_URI . '/assets/css/solutions.css',
+			[ 'pass24-design-system' ],
+			PASS24_CHILD_VERSION
+		);
+	}
+
+	// Страница интеграций /integrations/
+	if ( is_page( 'integrations' ) ) {
+		wp_enqueue_style(
+			'pass24-integrations',
+			PASS24_CHILD_URI . '/assets/css/integrations.css',
+			[ 'pass24-design-system' ],
+			PASS24_CHILD_VERSION
+		);
+	}
 }
 
 /* --------------------------------------------------------------------------
@@ -250,9 +313,27 @@ add_filter( 'body_class', 'pass24_page_slug_body_class' );
 
 function pass24_page_slug_body_class( array $classes ): array {
 	if ( is_page() ) {
-		$classes[] = 'page-slug-' . get_post_field( 'post_name', get_queried_object_id() );
+		$post_id = get_queried_object_id();
+		$classes[] = 'page-slug-' . get_post_field( 'post_name', $post_id );
+
+		// Добавить класс родительской страницы (page-parent-products, page-parent-solutions)
+		$parent_id = wp_get_post_parent_id( $post_id );
+		if ( $parent_id ) {
+			$classes[] = 'page-parent-' . get_post_field( 'post_name', $parent_id );
+		}
 	}
 	return $classes;
+}
+
+/**
+ * Проверяет, является ли текущая страница дочерней для указанного slug.
+ */
+function pass24_is_child_of_page( string $parent_slug ): bool {
+	$parent_id = wp_get_post_parent_id( get_queried_object_id() );
+	if ( ! $parent_id ) {
+		return false;
+	}
+	return get_post_field( 'post_name', $parent_id ) === $parent_slug;
 }
 
 /* --------------------------------------------------------------------------

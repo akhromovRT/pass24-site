@@ -1,0 +1,295 @@
+/* ==========================================================================
+   Products / Продуктовые страницы
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Hero
+   -------------------------------------------------------------------------- */
+
+.p24-product-hero {
+  padding: 80px 0 0;
+}
+
+.p24-product-hero__layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.p24-product-hero__content .p24-badge {
+  margin-bottom: 16px;
+}
+
+.p24-product-hero__content .p24-h1 {
+  margin-bottom: 16px;
+}
+
+.p24-product-hero__content .p24-subtitle {
+  margin-bottom: 24px;
+}
+
+.p24-product-hero__actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.p24-product-hero__image-wrap {
+  background: var(--p24-bg-secondary);
+  border-radius: var(--p24-radius-xl);
+  overflow: hidden;
+  border: 1px solid var(--p24-border);
+  box-shadow: var(--p24-shadow-lg);
+}
+
+.p24-product-hero__image-wrap img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* --------------------------------------------------------------------------
+   Steps (Как это работает)
+   -------------------------------------------------------------------------- */
+
+.p24-product-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  counter-reset: step;
+}
+
+.p24-product-step {
+  text-align: center;
+  padding: 32px 24px;
+}
+
+.p24-product-step__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--p24-primary);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.p24-product-step .p24-h4 {
+  margin-bottom: 8px;
+}
+
+.p24-product-step p {
+  color: var(--p24-text-secondary);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* --------------------------------------------------------------------------
+   Features (Ключевые возможности)
+   -------------------------------------------------------------------------- */
+
+.p24-product-feature {
+  position: relative;
+}
+
+.p24-product-feature__metric {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--p24-primary);
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.p24-product-feature .p24-h4 {
+  margin-bottom: 8px;
+}
+
+.p24-product-feature p {
+  color: var(--p24-text-secondary);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* --------------------------------------------------------------------------
+   Integrations grid
+   -------------------------------------------------------------------------- */
+
+.p24-product-integrations {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 32px;
+}
+
+.p24-product-integration {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 24px;
+  background: var(--p24-bg-primary);
+  border: 1px solid var(--p24-border);
+  border-radius: var(--p24-radius-md);
+  transition: all var(--p24-transition);
+}
+
+.p24-product-integration:hover {
+  border-color: var(--p24-primary);
+  box-shadow: var(--p24-shadow-sm);
+}
+
+.p24-product-integration img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+  filter: grayscale(0.3);
+  transition: filter var(--p24-transition);
+}
+
+.p24-product-integration:hover img {
+  filter: grayscale(0);
+}
+
+/* --------------------------------------------------------------------------
+   Use cases (Кому подходит)
+   -------------------------------------------------------------------------- */
+
+.p24-product-usecase {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: all var(--p24-transition);
+}
+
+.p24-product-usecase:hover {
+  border-color: var(--p24-primary);
+}
+
+.p24-product-usecase .p24-h4 {
+  margin-bottom: 8px;
+}
+
+.p24-product-usecase p {
+  color: var(--p24-text-secondary);
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.p24-product-usecase__link {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--p24-primary);
+}
+
+/* --------------------------------------------------------------------------
+   Case study
+   -------------------------------------------------------------------------- */
+
+.p24-product-case {
+  text-align: center;
+  padding: 48px 32px;
+  background: var(--p24-bg-primary);
+  border: 1px solid var(--p24-border);
+  border-radius: var(--p24-radius-xl);
+}
+
+.p24-product-case__quote {
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--p24-text-primary);
+  font-style: italic;
+  margin: 24px 0;
+  padding: 0;
+  border: none;
+}
+
+/* --------------------------------------------------------------------------
+   Hub page (page-products.php)
+   -------------------------------------------------------------------------- */
+
+.p24-products-hub-hero {
+  padding: 80px 0 0;
+}
+
+.p24-products-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.p24-product-hub-card {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+}
+
+.p24-product-hub-card:hover {
+  border-color: var(--p24-primary);
+}
+
+.p24-product-hub-card .p24-badge {
+  align-self: flex-start;
+  margin-bottom: 12px;
+}
+
+.p24-product-hub-card .p24-h4 {
+  margin-bottom: 8px;
+}
+
+.p24-product-hub-card p {
+  color: var(--p24-text-secondary);
+  font-size: 15px;
+  line-height: 1.6;
+  flex: 1;
+}
+
+.p24-product-hub-card__link {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--p24-primary);
+  margin-top: 16px;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 768px) {
+  .p24-product-hero {
+    padding-top: 48px;
+  }
+
+  .p24-product-hero__layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .p24-product-steps {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .p24-product-integrations {
+    gap: 16px;
+  }
+
+  .p24-product-integration {
+    padding: 12px 16px;
+  }
+
+  .p24-product-case {
+    padding: 32px 20px;
+  }
+
+  .p24-products-grid {
+    grid-template-columns: 1fr;
+  }
+}

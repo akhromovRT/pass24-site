@@ -9,6 +9,50 @@
 
 ## Записи
 
+### 2026-03-02 — Фаза 3 (3.1–3.3): продукты, решения, интеграции
+
+Реализована data-driven архитектура шаблонов для 17 новых страниц.
+
+**Архитектура:**
+- `inc/product-data.php` — массив 6 продуктов, `inc/solution-data.php` — массив 8 решений, `inc/integration-data.php` — 7 партнёров
+- `template-parts/product-page.php` (7 секций), `template-parts/solution-page.php` (8 секций) — shared шаблоны
+- 14 thin dispatcher файлов `page-{slug}.php` (~5 строк каждый)
+- `page-products.php`, `page-solutions.php` — hub-страницы (карточные сетки)
+- `page-integrations.php` — standalone страница интеграций (сетка, Open API, CTA)
+
+**Инфраструктура:**
+- `functions.php`: хелпер `pass24_is_child_of_page()`, parent body class `page-parent-{slug}`, conditional enqueue products/solutions/integrations
+- `design-system.css`: parent-based full-width selectors (`page-parent-products`, `page-parent-solutions`)
+- `solutions.js`: auto-select сегмента в CTA-форме, AJAX-отправка
+
+**CSS:** `products.css`, `solutions.css`, `integrations.css` — shared стили для каждого типа страниц
+
+**Placeholders:** hero-images для продуктов/решений, testimonial authors `[Имя Фамилия]`, construction/security без реальных кейсов
+
+### 2026-03-02 — Фаза 2 завершена: все основные страницы
+
+Полностью реализована Фаза 2 (основные страницы). Все шаблоны — кастомный PHP (без Bricks Builder).
+
+**2.1 Глобальные элементы:**
+- `header.php` + `header.js` — шапка с навигацией, мобильное меню, sticky shadow
+- `footer.php` — подвал с навигацией, контактами, соцсетями, юр. информацией
+- Sticky CTA-бар перенесён из `front-page.php` в `footer.php` (глобально)
+- SVG-ассеты перемещены из `assets-temp/` в `assets/img/` (logos, integrations, icons)
+
+**2.2 Главная (12 секций):** `front-page.php` — hero, доверие, проблемы, решение, роли, сегменты, сравнение, кейсы, отзывы, интеграции, награды, финальный CTA
+
+**2.3 Тарифы:** `page-pricing.php` + `pricing.js` + `pricing.css` — 4 тарифа, переключатель год/месяц, FAQ-аккордеон
+
+**2.4 Демо:** `page-demo.php` + `demo.js` + `demo.css` — 3-шаговая форма, auto-save Step 1, REST endpoint `/pass24/v1/demo-request`, fallback на Gravity Forms
+
+**2.5 О компании:** `page-about.php` + `about.css` — статистика, продукты, награды, доверие, клиенты, карта-placeholder
+
+**2.6 Контакты:** `page-contacts.php` + `contacts.js` + `contacts.css` — инфо + форма, REST endpoint `/pass24/v1/contact`, fallback на Gravity Forms (form ID=2)
+
+**REST API:** два endpoint'а в `functions.php` — `demo-request` и `contact` — с отправкой в Bitrix24 webhook + email fallback.
+
+**Placeholders (требуют замены):** телефоны `XXX-XX-XX` (5+ мест), авторы отзывов, hero-image, product images, карта на странице контактов.
+
 ### 2026-02-25 — Синхронизация всех документов с blueprint v2.0
 
 После полной перестройки blueprint обновлены все зависимые документы:
