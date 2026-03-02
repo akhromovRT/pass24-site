@@ -130,6 +130,16 @@ function pass24_enqueue_assets(): void {
 			'nonce' => wp_create_nonce( 'wp_rest' ),
 		] );
 	}
+
+	// Страница «О компании» — загружать только на /about/
+	if ( is_page( 'about' ) ) {
+		wp_enqueue_style(
+			'pass24-about',
+			PASS24_CHILD_URI . '/assets/css/about.css',
+			[ 'pass24-design-system' ],
+			PASS24_CHILD_VERSION
+		);
+	}
 }
 
 /* --------------------------------------------------------------------------
