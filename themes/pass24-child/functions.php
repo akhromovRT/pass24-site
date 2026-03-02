@@ -140,6 +140,29 @@ function pass24_enqueue_assets(): void {
 			PASS24_CHILD_VERSION
 		);
 	}
+
+	// Страница контактов — загружать только на /about/contacts/
+	if ( is_page( 'contacts' ) ) {
+		wp_enqueue_style(
+			'pass24-contacts',
+			PASS24_CHILD_URI . '/assets/css/contacts.css',
+			[ 'pass24-design-system' ],
+			PASS24_CHILD_VERSION
+		);
+
+		wp_enqueue_script(
+			'pass24-contacts',
+			PASS24_CHILD_URI . '/assets/js/contacts.js',
+			[],
+			PASS24_CHILD_VERSION,
+			true
+		);
+
+		wp_localize_script( 'pass24-contacts', 'wpApiSettings', [
+			'root'  => esc_url_raw( rest_url() ),
+			'nonce' => wp_create_nonce( 'wp_rest' ),
+		] );
+	}
 }
 
 /* --------------------------------------------------------------------------
@@ -272,12 +295,18 @@ function pass24_theme_setup(): void {
    7. REST API — обработка формы демо-запроса
    -------------------------------------------------------------------------- */
 
-add_action( 'rest_api_init', 'pass24_register_demo_endpoint' );
+add_action( 'rest_api_init', 'pass24_register_rest_endpoints' );
 
-function pass24_register_demo_endpoint(): void {
+function pass24_register_rest_endpoints(): void {
 	register_rest_route( 'pass24/v1', '/demo-request', [
 		'methods'             => 'POST',
 		'callback'            => 'pass24_handle_demo_request',
+		'permission_callback' => '__return_true',
+	] );
+
+	register_rest_route( 'pass24/v1', '/contact', [
+		'methods'             => 'POST',
+		'callback'            => 'pass24_handle_contact_form',
 		'permission_callback' => '__return_true',
 	] );
 }
@@ -361,6 +390,70 @@ function pass24_handle_demo_request( WP_REST_Request $request ): WP_REST_Respons
 	$body        = "Имя: {$name}\nТелефон: {$phone}\nEmail: {$email}\n\n{$crm_comment}";
 
 	wp_mail( $admin_email, $subject, $body );
+
+	return new WP_REST_Response( [ 'success' => true ], 200 );
+}
+
+/* --------------------------------------------------------------------------
+   8. REST API — обработка контактной формы
+   -------------------------------------------------------------------------- */
+
+function pass24_handle_contact_form( WP_REST_Request $request ): WP_REST_Response {
+	$params = $request->get_json_params();
+
+	$name    = sanitize_text_field( $params['name'] ?? '' );
+	$email   = sanitize_email( $params['email'] ?? '' );
+	$phone   = sanitize_text_field( $params['phone'] ?? '' );
+	$subject = sanitize_text_field( $params['subject'] ?? 'Другое' );
+	$message = sanitize_textarea_field( $params['message'] ?? '' );
+
+	if ( empty( $name ) || empty( $email ) || empty( $message ) ) {
+		return new WP_REST_Response( [ 'error' => 'Missing required fields' ], 400 );
+	}
+
+	$subjects_map = [
+		'demo'        => 'Запрос демонстрации',
+		'pricing'     => 'Вопрос по тарифам',
+		'technical'   => 'Технический вопрос',
+		'partnership' => 'Партнёрство',
+		'other'       => 'Другое',
+	];
+	$subject_label = $subjects_map[ $subject ] ?? $subject;
+
+	// Send to Bitrix24
+	$bitrix_url = defined( 'PASS24_BITRIX_WEBHOOK' ) ? PASS24_BITRIX_WEBHOOK : '';
+	if ( $bitrix_url ) {
+		$lead_data = [
+			'fields' => [
+				'TITLE'     => 'Контакт: ' . $subject_label . ' — ' . $name,
+				'NAME'      => $name,
+				'EMAIL'     => [ [ 'VALUE' => $email, 'VALUE_TYPE' => 'WORK' ] ],
+				'COMMENTS'  => "Тема: {$subject_label}\n\n{$message}",
+				'SOURCE_ID' => 'WEB',
+			],
+		];
+
+		if ( $phone ) {
+			$lead_data['fields']['PHONE'] = [ [ 'VALUE' => $phone, 'VALUE_TYPE' => 'WORK' ] ];
+		}
+
+		wp_remote_post( $bitrix_url . 'crm.lead.add.json', [
+			'body'    => wp_json_encode( $lead_data ),
+			'headers' => [ 'Content-Type' => 'application/json' ],
+			'timeout' => 10,
+		] );
+	}
+
+	// Email notification
+	$admin_email  = get_option( 'admin_email' );
+	$mail_subject = 'Контактная форма: ' . $subject_label . ' — ' . $name;
+	$mail_body    = "Имя: {$name}\nEmail: {$email}\n";
+	if ( $phone ) {
+		$mail_body .= "Телефон: {$phone}\n";
+	}
+	$mail_body .= "Тема: {$subject_label}\n\nСообщение:\n{$message}";
+
+	wp_mail( $admin_email, $mail_subject, $mail_body );
 
 	return new WP_REST_Response( [ 'success' => true ], 200 );
 }

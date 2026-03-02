@@ -326,7 +326,8 @@ body {
 body.home .site.grid-container,
 body.page-slug-pricing .site.grid-container,
 body.page-slug-demo .site.grid-container,
-body.page-slug-about .site.grid-container {
+body.page-slug-about .site.grid-container,
+body.page-slug-contacts .site.grid-container {
   max-width: 100%;
   padding: 0;
 }
@@ -334,7 +335,8 @@ body.page-slug-about .site.grid-container {
 body.home .site-content,
 body.page-slug-pricing .site-content,
 body.page-slug-demo .site-content,
-body.page-slug-about .site-content {
+body.page-slug-about .site-content,
+body.page-slug-contacts .site-content {
   max-width: 100% !important;
   width: 100% !important;
 }
@@ -342,7 +344,8 @@ body.page-slug-about .site-content {
 body.home .site-main,
 body.page-slug-pricing .site-main,
 body.page-slug-demo .site-main,
-body.page-slug-about .site-main {
+body.page-slug-about .site-main,
+body.page-slug-contacts .site-main {
   margin: 0 !important;
   max-width: 100% !important;
 }
@@ -350,7 +353,8 @@ body.page-slug-about .site-main {
 body.home .content-area,
 body.page-slug-pricing .content-area,
 body.page-slug-demo .content-area,
-body.page-slug-about .content-area {
+body.page-slug-about .content-area,
+body.page-slug-contacts .content-area {
   width: 100% !important;
   max-width: 100% !important;
 }
