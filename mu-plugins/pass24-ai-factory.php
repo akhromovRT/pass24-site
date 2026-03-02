@@ -14,6 +14,10 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+// Enable Application Passwords (Wordfence disables them by default).
+// Required for AI Sales Factory to publish content via REST API.
+add_filter( 'wp_is_application_passwords_available', '__return_true', 999 );
+
 // ---------------------------------------------------------------------------
 // 1. Регистрация мета-полей Rank Math Pro в WordPress REST API
 //
