@@ -226,6 +226,26 @@ function pass24_enqueue_assets(): void {
 			PASS24_CHILD_VERSION
 		);
 	}
+
+	// Страницы кейсов /cases/*
+	if ( is_page( 'cases' ) || ( is_page() && pass24_is_child_of_page( 'cases' ) ) ) {
+		wp_enqueue_style(
+			'pass24-cases',
+			PASS24_CHILD_URI . '/assets/css/cases.css',
+			[ 'pass24-design-system' ],
+			PASS24_CHILD_VERSION
+		);
+	}
+
+	// Блог
+	if ( is_singular( 'post' ) || is_home() || is_category() || is_tag() || is_archive() ) {
+		wp_enqueue_style(
+			'pass24-blog',
+			PASS24_CHILD_URI . '/assets/css/blog.css',
+			[ 'pass24-design-system' ],
+			PASS24_CHILD_VERSION
+		);
+	}
 }
 
 /* --------------------------------------------------------------------------
