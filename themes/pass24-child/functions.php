@@ -106,6 +106,30 @@ function pass24_enqueue_assets(): void {
 			true
 		);
 	}
+
+	// Страница демо — загружать только на /demo/
+	if ( is_page( 'demo' ) ) {
+		wp_enqueue_style(
+			'pass24-demo',
+			PASS24_CHILD_URI . '/assets/css/demo.css',
+			[ 'pass24-design-system' ],
+			PASS24_CHILD_VERSION
+		);
+
+		wp_enqueue_script(
+			'pass24-demo',
+			PASS24_CHILD_URI . '/assets/js/demo.js',
+			[],
+			PASS24_CHILD_VERSION,
+			true
+		);
+
+		// WP REST API nonce для AJAX-отправки формы
+		wp_localize_script( 'pass24-demo', 'wpApiSettings', [
+			'root'  => esc_url_raw( rest_url() ),
+			'nonce' => wp_create_nonce( 'wp_rest' ),
+		] );
+	}
 }
 
 /* --------------------------------------------------------------------------
@@ -232,4 +256,101 @@ function pass24_theme_setup(): void {
 	add_image_size( 'pass24-card', 600, 400, true );        // Карточки кейсов/продуктов
 	add_image_size( 'pass24-hero', 1200, 630, true );        // Hero и OG-изображения
 	add_image_size( 'pass24-logo', 200, 80, false );         // Логотипы клиентов
+}
+
+/* --------------------------------------------------------------------------
+   7. REST API — обработка формы демо-запроса
+   -------------------------------------------------------------------------- */
+
+add_action( 'rest_api_init', 'pass24_register_demo_endpoint' );
+
+function pass24_register_demo_endpoint(): void {
+	register_rest_route( 'pass24/v1', '/demo-request', [
+		'methods'             => 'POST',
+		'callback'            => 'pass24_handle_demo_request',
+		'permission_callback' => '__return_true',
+	] );
+}
+
+function pass24_handle_demo_request( WP_REST_Request $request ): WP_REST_Response {
+	$params = $request->get_json_params();
+
+	$name          = sanitize_text_field( $params['name'] ?? '' );
+	$phone         = sanitize_text_field( $params['phone'] ?? '' );
+	$email         = sanitize_email( $params['email'] ?? '' );
+	$object_type   = sanitize_text_field( $params['object_type'] ?? '' );
+	$access_points = sanitize_text_field( $params['access_points'] ?? '' );
+	$has_skud      = sanitize_text_field( $params['has_skud'] ?? '' );
+	$call_time     = sanitize_text_field( $params['call_time'] ?? '' );
+	$comment       = sanitize_textarea_field( $params['comment'] ?? '' );
+	$is_partial    = ! empty( $params['partial'] );
+
+	// Validate required fields
+	if ( empty( $name ) || empty( $phone ) || empty( $email ) ) {
+		return new WP_REST_Response( [ 'error' => 'Missing required fields' ], 400 );
+	}
+
+	// UTM parameters
+	$utm = [];
+	foreach ( [ 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content' ] as $key ) {
+		if ( ! empty( $params[ $key ] ) ) {
+			$utm[ $key ] = sanitize_text_field( $params[ $key ] );
+		}
+	}
+
+	// Build comment for CRM
+	$crm_comment = '';
+	if ( $object_type ) {
+		$crm_comment .= "Тип объекта: {$object_type}\n";
+	}
+	if ( $access_points ) {
+		$crm_comment .= "Точек доступа: {$access_points}\n";
+	}
+	if ( $has_skud ) {
+		$crm_comment .= 'Текущий СКУД: ' . ( 'yes' === $has_skud ? 'Да' : 'Нет' ) . "\n";
+	}
+	if ( $call_time ) {
+		$crm_comment .= "Время звонка: {$call_time}\n";
+	}
+	if ( $comment ) {
+		$crm_comment .= "Комментарий: {$comment}\n";
+	}
+	if ( $is_partial ) {
+		$crm_comment .= "\n[Частичная заявка — шаг 1]\n";
+	}
+
+	// Send to Bitrix24 if webhook is configured
+	$bitrix_url = defined( 'PASS24_BITRIX_WEBHOOK' ) ? PASS24_BITRIX_WEBHOOK : '';
+	if ( $bitrix_url ) {
+		$lead_data = [
+			'fields' => [
+				'TITLE'    => ( $is_partial ? '[Partial] ' : '' ) . 'Демо: ' . $name,
+				'NAME'     => $name,
+				'PHONE'    => [ [ 'VALUE' => $phone, 'VALUE_TYPE' => 'WORK' ] ],
+				'EMAIL'    => [ [ 'VALUE' => $email, 'VALUE_TYPE' => 'WORK' ] ],
+				'COMMENTS' => $crm_comment,
+				'SOURCE_ID' => 'WEB',
+			],
+		];
+
+		// Add UTM fields
+		foreach ( $utm as $key => $value ) {
+			$lead_data['fields'][ 'UTM_' . strtoupper( str_replace( 'utm_', '', $key ) ) ] = $value;
+		}
+
+		wp_remote_post( $bitrix_url . 'crm.lead.add.json', [
+			'body'    => wp_json_encode( $lead_data ),
+			'headers' => [ 'Content-Type' => 'application/json' ],
+			'timeout' => 10,
+		] );
+	}
+
+	// Send email notification as fallback
+	$admin_email = get_option( 'admin_email' );
+	$subject     = ( $is_partial ? '[Partial] ' : '' ) . 'Заявка на демо: ' . $name;
+	$body        = "Имя: {$name}\nТелефон: {$phone}\nEmail: {$email}\n\n{$crm_comment}";
+
+	wp_mail( $admin_email, $subject, $body );
+
+	return new WP_REST_Response( [ 'success' => true ], 200 );
 }

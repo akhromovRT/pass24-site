@@ -324,25 +324,29 @@ body {
  * Используем body-классы WordPress: .home (главная), .page-template-default (страницы).
  */
 body.home .site.grid-container,
-body.page-slug-pricing .site.grid-container {
+body.page-slug-pricing .site.grid-container,
+body.page-slug-demo .site.grid-container {
   max-width: 100%;
   padding: 0;
 }
 
 body.home .site-content,
-body.page-slug-pricing .site-content {
+body.page-slug-pricing .site-content,
+body.page-slug-demo .site-content {
   max-width: 100% !important;
   width: 100% !important;
 }
 
 body.home .site-main,
-body.page-slug-pricing .site-main {
+body.page-slug-pricing .site-main,
+body.page-slug-demo .site-main {
   margin: 0 !important;
   max-width: 100% !important;
 }
 
 body.home .content-area,
-body.page-slug-pricing .content-area {
+body.page-slug-pricing .content-area,
+body.page-slug-demo .content-area {
   width: 100% !important;
   max-width: 100% !important;
 }
