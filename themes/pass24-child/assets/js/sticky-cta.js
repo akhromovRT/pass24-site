@@ -11,7 +11,7 @@
  *     Попробовать бесплатно — 14 дней
  *   </a>
  *   <span class="p24-sticky-cta__divider"></span>
- *   <a href="tel:+74951234567" class="p24-sticky-cta__phone">
+ *   <a href="tel:+74954144455" class="p24-sticky-cta__phone">
  *     +7 (495) 123-45-67
  *   </a>
  * </div>

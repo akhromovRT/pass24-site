@@ -246,10 +246,10 @@ get_header();
 
 							<div class="p24-demo-contact">
 								<p>Предпочитаете позвонить?</p>
-								<a href="tel:+74951234567" class="p24-demo-contact__phone">+7 (495) XXX-XX-XX</a>
+								<a href="tel:+74954144455" class="p24-demo-contact__phone">+7 (495) 414-44-55</a>
 								<div class="p24-demo-contact__messengers">
 									<a href="https://t.me/pass24" target="_blank" rel="noopener noreferrer">Telegram</a>
-									<a href="https://wa.me/74951234567" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+									<a href="https://wa.me/74954144455" target="_blank" rel="noopener noreferrer">WhatsApp</a>
 								</div>
 							</div>
 
