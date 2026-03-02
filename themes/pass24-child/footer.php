@@ -9,6 +9,12 @@
 
 defined( 'ABSPATH' ) || exit;
 
+require_once PASS24_CHILD_DIR . '/inc/product-data.php';
+require_once PASS24_CHILD_DIR . '/inc/solution-data.php';
+
+$footer_products  = pass24_get_products();
+$footer_solutions = array_slice( pass24_get_solutions(), 0, 5, true );
+
 // Закрывающие теги </main>, </div>, </div> уже в шаблонах (front-page.php, page-pricing.php).
 // footer.php закрывает .site.grid-container (из header.php) и выводит <footer>.
 ?>
@@ -45,27 +51,23 @@ defined( 'ABSPATH' ) || exit;
 					</div>
 				</div>
 
-				<!-- Колонка 2: Продукты -->
+				<!-- Колонка 2: Продукты (динамически из product-data.php) -->
 				<div class="p24-footer__col">
 					<h4 class="p24-footer__heading">Продукты</h4>
 					<ul class="p24-footer__links">
-						<li><a href="/products/bureau/">Бюро пропусков</a></li>
-						<li><a href="/products/lpr/">Распознавание номеров</a></li>
-						<li><a href="/products/digital-key/">Цифровой ключ</a></li>
-						<li><a href="/products/parking/">Парковка</a></li>
-						<li><a href="/products/analytics/">Аналитика</a></li>
+						<?php foreach ( $footer_products as $slug => $prod ) : ?>
+						<li><a href="/products/<?php echo esc_attr( $slug ); ?>/"><?php echo esc_html( $prod['name'] ); ?></a></li>
+						<?php endforeach; ?>
 					</ul>
 				</div>
 
-				<!-- Колонка 3: Решения -->
+				<!-- Колонка 3: Решения (динамически из solution-data.php, топ-5) -->
 				<div class="p24-footer__col">
 					<h4 class="p24-footer__heading">Решения</h4>
 					<ul class="p24-footer__links">
-						<li><a href="/solutions/residential-complex/">Жилые комплексы</a></li>
-						<li><a href="/solutions/cottage-village/">Коттеджные посёлки</a></li>
-						<li><a href="/solutions/business-center/">Бизнес-центры</a></li>
-						<li><a href="/solutions/logistics/">Логистика</a></li>
-						<li><a href="/solutions/production/">Производство</a></li>
+						<?php foreach ( $footer_solutions as $slug => $sol ) : ?>
+						<li><a href="/solutions/<?php echo esc_attr( $slug ); ?>/"><?php echo esc_html( $sol['nav_name'] ); ?></a></li>
+						<?php endforeach; ?>
 					</ul>
 				</div>
 
