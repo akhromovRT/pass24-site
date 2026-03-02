@@ -9,6 +9,30 @@
 
 ## Записи
 
+### 2026-03-02 — Фаза 4: кейсы (5 страниц) + блог (10 статей)
+
+**Кейсы (/cases/):**
+- `inc/case-data.php` — данные 5 кейсов (Садовые Кварталы, Агаларов, MLP, Амфион, Нагатино)
+- `template-parts/case-page.php` — shared шаблон 7 секций (hero, задача, решение, метрики, отзыв, продукты, CTA)
+- `page-cases.php` — hub с карточной сеткой 2 колонки
+- 5 thin dispatchers: `page-sadovye-kvartaly.php`, `page-agalarov.php`, `page-mlp.php`, `page-amphion.php`, `page-nagatino.php`
+- `assets/css/cases.css` — стили кейсов (метрики, testimonial, hub-карточки)
+
+**Блог (/blog/):**
+- `archive.php` — список постов с фильтрацией по категориям, пагинация, CTA
+- `home.php` — делегирует в archive.php (WordPress Posts page)
+- `single.php` — шаблон статьи: хлебные крошки, мета (дата, время чтения), контент, inline CTA, related posts, навигация
+- `assets/css/blog.css` — стили: карточки постов, типографика статьи, пагинация, breadcrumbs
+- 9 категорий (cloud-skud, zhk, cottage-village, skud-bc, mobile-passes, lpr-technology, reviews, guides, logistics-production)
+- 10 SEO-статей с полным контентом (800-1200 слов каждая)
+
+**Общее:**
+- `functions.php` — conditional enqueue для cases.css и blog.css
+- `design-system.css` — full-width overrides для cases и blog body classes
+- Домен: pass24pro.ru (WordPress siteurl)
+
+**Commit:** `820200c` feat: Phase 4 — кейсы (5 страниц + hub) и блог (archive, single, home)
+
 ### 2026-03-02 — Фаза 3 (3.1–3.3): продукты, решения, интеграции
 
 Реализована data-driven архитектура шаблонов для 17 новых страниц.
