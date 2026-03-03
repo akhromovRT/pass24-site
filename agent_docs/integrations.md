@@ -9,7 +9,7 @@
 │  WORDPRESS                                             │
 │                                                        │
 │  Gravity Forms + Flamix Bitrix24                       │
-│  JivoSite чат                                         │
+│  Битрикс24 Open Lines чат                              │
 │  Калькулятор ROI (JS → webhook)                        │
 │  Конфигуратор решений (JS → webhook)                   │
 │                                                        │
@@ -119,7 +119,7 @@ Content-Disposition: attachment; filename="image.jpg"
 Шаг 5: Битрикс24 — уведомление контент-менеджеру на ревью
 ```
 
-## Квалификационный чат-бот (JivoSite)
+## Квалификационный чат-бот (Битрикс24 Open Lines)
 
 Контекстные приветствия по URL:
 
