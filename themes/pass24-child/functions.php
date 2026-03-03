@@ -246,6 +246,15 @@ function pass24_enqueue_assets(): void {
 			PASS24_CHILD_VERSION
 		);
 	}
+
+	// Global analytics — UTM cookies (all pages)
+	wp_enqueue_script(
+		'pass24-analytics',
+		PASS24_CHILD_URI . '/assets/js/analytics.js',
+		[],
+		PASS24_CHILD_VERSION,
+		true
+	);
 }
 
 /* --------------------------------------------------------------------------
@@ -390,6 +399,55 @@ function pass24_theme_setup(): void {
 	add_image_size( 'pass24-card', 600, 400, true );        // Карточки кейсов/продуктов
 	add_image_size( 'pass24-hero', 1200, 630, true );        // Hero и OG-изображения
 	add_image_size( 'pass24-logo', 200, 80, false );         // Логотипы клиентов
+}
+
+/* --------------------------------------------------------------------------
+   6. Structured Data — JSON-LD Schema.org
+   -------------------------------------------------------------------------- */
+
+add_action( 'wp_head', 'pass24_schema_jsonld' );
+
+function pass24_schema_jsonld(): void {
+	$schema = [
+		'@context'  => 'https://schema.org',
+		'@graph'    => [
+			[
+				'@type'               => 'Organization',
+				'name'                => 'PASS24.online',
+				'url'                 => 'https://pass24pro.ru',
+				'telephone'           => '+74954144455',
+				'email'               => 'info@pass24.online',
+				'description'         => 'Облачная система контроля доступа для жилых комплексов, бизнес-центров и коттеджных посёлков',
+				'address'             => [
+					'@type'           => 'PostalAddress',
+					'addressCountry'  => 'RU',
+					'addressLocality' => 'Москва',
+				],
+				'sameAs'              => [
+					'https://t.me/pass24online',
+				],
+			],
+			[
+				'@type'               => 'SoftwareApplication',
+				'name'                => 'PASS24.online',
+				'description'         => 'Облачная система контроля доступа (СКУД) — управление шлагбаумами, домофонами и калитками через мобильное приложение',
+				'url'                 => 'https://pass24pro.ru',
+				'applicationCategory' => 'SecurityApplication',
+				'operatingSystem'     => 'Cloud, iOS, Android',
+				'offers'              => [
+					'@type'         => 'AggregateOffer',
+					'priceCurrency' => 'RUB',
+					'lowPrice'      => '0',
+					'highPrice'     => '14990',
+					'offerCount'    => '4',
+				],
+			],
+		],
+	];
+
+	echo '<script type="application/ld+json">' .
+		wp_json_encode( $schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT ) .
+		"</script>\n";
 }
 
 /* --------------------------------------------------------------------------

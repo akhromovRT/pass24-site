@@ -56,13 +56,24 @@
 		form.style.display = 'none';
 		if (success) success.style.display = 'block';
 
-		// GA4
+		// GA4 via dataLayer
 		if (window.dataLayer) {
 			window.dataLayer.push({
 				event: 'contact_form_submit',
 				event_category: 'lead_generation',
 				form_name: 'contact_form'
 			});
+			window.dataLayer.push({
+				event: 'generate_lead',
+				event_category: 'form_submission',
+				form_name: 'contact_form'
+			});
+		}
+
+		// Yandex.Metrika
+		if (window.ym && window.Ya && window.Ya._metrika && window.Ya._metrika.counter) {
+			window.ym(window.Ya._metrika.counter, 'reachGoal', 'contact_form_submit');
+			window.ym(window.Ya._metrika.counter, 'reachGoal', 'generate_lead');
 		}
 	}
 })();

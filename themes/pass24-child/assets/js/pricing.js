@@ -123,5 +123,18 @@
 	document.addEventListener( 'DOMContentLoaded', function () {
 		initPricingToggle();
 		initFaq();
+
+		// Track pricing page view
+		if ( window.dataLayer ) {
+			window.dataLayer.push( {
+				event: 'pricing_viewed',
+				event_category: 'engagement'
+			} );
+		}
+
+		// Yandex.Metrika
+		if ( window.ym && window.Ya && window.Ya._metrika && window.Ya._metrika.counter ) {
+			window.ym( window.Ya._metrika.counter, 'reachGoal', 'pricing_viewed' );
+		}
 	} );
 } )();
