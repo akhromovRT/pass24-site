@@ -36,6 +36,6 @@
 	});
 
 	if (hasUtm) {
-		setCookie('utm_landing', window.location.pathname, COOKIE_DAYS);
+		setCookie('utm_landing', encodeURIComponent(window.location.pathname), COOKIE_DAYS);
 	}
 })();

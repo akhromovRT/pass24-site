@@ -437,7 +437,7 @@ function pass24_schema_jsonld(): void {
 				'offers'              => [
 					'@type'         => 'AggregateOffer',
 					'priceCurrency' => 'RUB',
-					'lowPrice'      => '0',
+					'lowPrice'      => '990',
 					'highPrice'     => '14990',
 					'offerCount'    => '4',
 				],

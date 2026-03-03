@@ -70,10 +70,10 @@
 			});
 		}
 
-		// Yandex.Metrika
-		if (window.ym && window.Ya && window.Ya._metrika && window.Ya._metrika.counter) {
-			window.ym(window.Ya._metrika.counter, 'reachGoal', 'contact_form_submit');
-			window.ym(window.Ya._metrika.counter, 'reachGoal', 'generate_lead');
+		// Yandex.Metrika (counter ID hardcoded — Ya._metrika.counter is undocumented)
+		if (window.ym) {
+			window.ym(106989472, 'reachGoal', 'contact_form_submit');
+			window.ym(106989472, 'reachGoal', 'generate_lead');
 		}
 	}
 })();

@@ -132,9 +132,9 @@
 			} );
 		}
 
-		// Yandex.Metrika
-		if ( window.ym && window.Ya && window.Ya._metrika && window.Ya._metrika.counter ) {
-			window.ym( window.Ya._metrika.counter, 'reachGoal', 'pricing_viewed' );
+		// Yandex.Metrika (counter ID hardcoded — Ya._metrika.counter is undocumented)
+		if ( window.ym ) {
+			window.ym( 106989472, 'reachGoal', 'pricing_viewed' );
 		}
 	} );
 } )();
