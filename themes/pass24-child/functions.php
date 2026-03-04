@@ -550,6 +550,25 @@ function pass24_handle_demo_request( WP_REST_Request $request ): WP_REST_Respons
 
 	wp_mail( $admin_email, $subject, $body );
 
+	// Notify AI Sales Factory (mu-plugin hooks into this action)
+	do_action( 'pass24_lead_submitted', [
+		'source'       => 'website',
+		'form_id'      => 'demo_request',
+		'contact_name' => $name,
+		'phone'        => $phone,
+		'email'        => $email,
+		'company_name' => '',
+		'metadata'     => array_merge( [
+			'object_type'   => $object_type,
+			'access_points' => $access_points,
+			'has_skud'      => $has_skud,
+			'call_time'     => $call_time,
+			'comment'       => $comment,
+			'is_partial'    => $is_partial,
+			'page_url'      => sanitize_url( $params['page_url'] ?? '' ),
+		], $utm ),
+	] );
+
 	return new WP_REST_Response( [ 'success' => true ], 200 );
 }
 
@@ -613,6 +632,21 @@ function pass24_handle_contact_form( WP_REST_Request $request ): WP_REST_Respons
 	$mail_body .= "Тема: {$subject_label}\n\nСообщение:\n{$message}";
 
 	wp_mail( $admin_email, $mail_subject, $mail_body );
+
+	// Notify AI Sales Factory (mu-plugin hooks into this action)
+	do_action( 'pass24_lead_submitted', [
+		'source'       => 'website',
+		'form_id'      => 'contact_form',
+		'contact_name' => $name,
+		'phone'        => $phone,
+		'email'        => $email,
+		'company_name' => '',
+		'metadata'     => [
+			'subject' => $subject_label,
+			'message' => $message,
+			'page_url' => sanitize_url( wp_get_referer() ?: '' ),
+		],
+	] );
 
 	return new WP_REST_Response( [ 'success' => true ], 200 );
 }

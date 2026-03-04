@@ -7,7 +7,7 @@
  * Установка: скопировать в wp-content/mu-plugins/ — активируется автоматически.
  *
  * Требует в wp-config.php:
- *   define( 'AI_FACTORY_URL', 'https://api.pass24.online' );
+ *   define( 'AI_FACTORY_URL', 'http://5.42.101.27:8000' );
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -45,53 +45,27 @@ add_action( 'init', function () {
 } );
 
 // ---------------------------------------------------------------------------
-// 2. Дублирование лидов из Gravity Forms в AI Sales Factory
+// 2. Дублирование лидов в AI Sales Factory
 //
-//    Запускается после каждой отправки формы (fire-and-forget, blocking=false).
-//    Основной поток Gravity Forms → Flamix → Битрикс24 не затрагивается.
-//
-//    Маппинг полей формы (настроить под реальные ID в Gravity Forms):
-//      Поле 1 → Имя контакта
-//      Поле 2 → Телефон
-//      Поле 3 → Email
-//      Поле 4 → Название компании
-//      Поле 5 → Тип объекта (ЖК / КП / БЦ / ...)
-//      Поле 6 → Количество точек доступа
-//      Поле 7 → Есть ли текущий СКУД
+//    Хукается на pass24_lead_submitted (вызывается из functions.php при
+//    отправке демо-формы или контактной формы). Fire-and-forget.
+//    Основной поток → Битрикс24 не затрагивается.
 // ---------------------------------------------------------------------------
-add_action( 'gform_after_submission', function ( $entry, $form ) {
+add_action( 'pass24_lead_submitted', function ( array $lead_data ) {
     $ai_factory_url = defined( 'AI_FACTORY_URL' ) ? AI_FACTORY_URL : getenv( 'AI_FACTORY_URL' );
 
     if ( empty( $ai_factory_url ) ) {
         return; // AI_FACTORY_URL не задан — пропустить без ошибки
     }
 
-    $lead_data = [
-        'source'       => 'website',
-        'form_id'      => $form['id'],
-        'contact_name' => rgar( $entry, '1' ),
-        'phone'        => rgar( $entry, '2' ),
-        'email'        => rgar( $entry, '3' ),
-        'company_name' => rgar( $entry, '4' ),
-        'metadata'     => [
-            'object_type'   => rgar( $entry, '5' ),
-            'access_points' => rgar( $entry, '6' ),
-            'has_skud'      => rgar( $entry, '7' ),
-            'utm_source'    => rgar( $entry, 'utm_source' ),
-            'utm_medium'    => rgar( $entry, 'utm_medium' ),
-            'utm_campaign'  => rgar( $entry, 'utm_campaign' ),
-            'page_url'      => rgar( $entry, 'source_url' ),
-        ],
-    ];
-
     wp_remote_post(
-        trailingslashit( $ai_factory_url ) . 'api/webhooks/lead',
+        trailingslashit( $ai_factory_url ) . 'webhooks/lead-form',
         [
             'body'      => wp_json_encode( $lead_data ),
             'headers'   => [ 'Content-Type' => 'application/json' ],
             'timeout'   => 5,
             'blocking'  => false,   // fire-and-forget: не задерживает ответ пользователю
-            'sslverify' => true,
+            'sslverify' => false,   // AI Factory на HTTP (внутренняя сеть)
         ]
     );
-}, 10, 2 );
+} );
