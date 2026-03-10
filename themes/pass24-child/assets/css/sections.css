@@ -470,7 +470,7 @@
 
 .p24-cta-chain__card--accent {
   border-color: var(--p24-primary);
-  background: #eff6ff;
+  background: color-mix(in srgb, var(--p24-primary) 8%, white);
 }
 
 .p24-cta-chain__title {

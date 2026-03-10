@@ -199,26 +199,27 @@ $first_cat  = $post_cats ? $post_cats[0] : null;
 			</section>
 
 
+			<!-- INLINE CTA (Task 4.3) -->
+
+			<section class="p24-section p24-section-gray">
+				<div class="p24-container">
+					<div class="p24-inline-cta">
+						<div class="p24-inline-cta__text">
+							<h3 class="p24-h3">Хотите увидеть PASS24 в действии?</h3>
+							<p>Бесплатная 30-минутная демонстрация под ваш тип объекта</p>
+						</div>
+						<div class="p24-inline-cta__actions">
+							<a href="/demo/" class="p24-btn p24-btn-primary">Записаться на демо</a>
+							<a href="/resources/roi-calculator/" class="p24-btn p24-btn-secondary">Рассчитать ROI</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+
 		</main>
 	</div>
 </div>
-
-<?php if ( is_single() ) : ?>
-<section class="p24-section p24-section-gray">
-  <div class="p24-container">
-    <div class="p24-inline-cta">
-      <div class="p24-inline-cta__text">
-        <h3 class="p24-h3">Хотите увидеть PASS24 в действии?</h3>
-        <p>Бесплатная 30-минутная демонстрация под ваш тип объекта</p>
-      </div>
-      <div class="p24-inline-cta__actions">
-        <a href="/demo/" class="p24-btn p24-btn-primary">Записаться на демо</a>
-        <a href="/resources/roi-calculator/" class="p24-btn p24-btn-secondary">Рассчитать ROI</a>
-      </div>
-    </div>
-  </div>
-</section>
-<?php endif; ?>
 
 <?php
 get_footer();
