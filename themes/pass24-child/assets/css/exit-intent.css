@@ -1,0 +1,114 @@
+/* Exit-intent popup */
+
+.p24-exit-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.p24-exit-popup.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.p24-exit-popup__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+}
+
+.p24-exit-popup__box {
+  position: relative;
+  background: #fff;
+  border-radius: var(--p24-radius-xl);
+  padding: 2.5rem;
+  max-width: 460px;
+  width: calc(100% - 2rem);
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  transform: translateY(16px);
+  transition: transform 0.3s ease;
+}
+
+.p24-exit-popup.is-visible .p24-exit-popup__box {
+  transform: translateY(0);
+}
+
+.p24-exit-popup__close {
+  position: absolute;
+  top: 1rem; right: 1rem;
+  width: 32px; height: 32px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1rem;
+  color: var(--p24-text-secondary);
+  border-radius: 50%;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.p24-exit-popup__close:hover { background: var(--p24-border); }
+
+.p24-exit-popup__badge {
+  display: inline-block;
+  background: #f0fdf4;
+  color: var(--p24-accent);
+  border-radius: 99px;
+  padding: 4px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.p24-exit-popup__title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.25;
+  margin-bottom: 0.75rem;
+  color: var(--p24-text-primary);
+}
+
+.p24-exit-popup__text {
+  color: var(--p24-text-secondary);
+  margin-bottom: 1.25rem;
+}
+
+.p24-exit-popup__cta {
+  display: block;
+  width: 100%;
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
+.p24-exit-popup__form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.p24-exit-popup__form .p24-btn { width: 100%; }
+
+.p24-exit-popup__success { padding: 1rem 0; }
+.p24-exit-popup__success p { margin-bottom: 0.75rem; }
+
+.p24-exit-popup__skip {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--p24-text-secondary);
+  font-size: 0.85rem;
+  text-decoration: underline;
+  padding: 0.5rem;
+  display: block;
+  margin: 0 auto;
+}

@@ -656,3 +656,6 @@ require_once PASS24_CHILD_DIR . '/inc/roi-calculator.php';
 
 // Block 4.2 — Solution Configurator
 require_once PASS24_CHILD_DIR . '/inc/configurator.php';
+
+// Block 4.5 — Exit-intent popups (also registers /download-lead endpoint for 4.4)
+require_once PASS24_CHILD_DIR . '/inc/exit-intent.php';
