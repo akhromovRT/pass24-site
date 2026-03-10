@@ -58,46 +58,43 @@ function pass24_handle_roi_lead( WP_REST_Request $request ): WP_REST_Response {
 		return new WP_REST_Response( [ 'success' => false, 'message' => 'Email или телефон обязательны' ], 400 );
 	}
 
-	// Bitrix24 CRM
-	$b24_url = defined( 'PASS24_BITRIX24_WEBHOOK_URL' ) ? PASS24_BITRIX24_WEBHOOK_URL : '';
-	if ( $b24_url ) {
-		wp_remote_post( $b24_url . 'crm.lead.add.json', [
-			'timeout' => 5,
-			'body'    => [
-				'fields[TITLE]'              => 'ROI-калькулятор: ' . ( $name ?: $email ),
-				'fields[NAME]'               => $name,
-				'fields[EMAIL][0][VALUE]'    => $email,
-				'fields[PHONE][0][VALUE]'    => $phone,
-				'fields[COMMENTS]'           => "ROI: тариф {$plan}, экономия {$savings} руб/мес, тип: {$object_type}",
-				'fields[SOURCE_ID]'          => 'WEB',
-				'fields[SOURCE_DESCRIPTION]' => 'ROI-калькулятор pass24pro.ru',
-				'fields[SCORE]'              => 20,
+	// Bitrix24 CRM — константа и формат идентичны остальным обработчикам
+	$bitrix_url = defined( 'PASS24_BITRIX_WEBHOOK' ) ? PASS24_BITRIX_WEBHOOK : '';
+	if ( $bitrix_url ) {
+		$lead_data = [
+			'fields' => [
+				'TITLE'              => 'ROI-калькулятор: ' . ( $name ?: $email ),
+				'NAME'               => $name,
+				'EMAIL'              => [ [ 'VALUE' => $email, 'VALUE_TYPE' => 'WORK' ] ],
+				'PHONE'              => [ [ 'VALUE' => $phone, 'VALUE_TYPE' => 'WORK' ] ],
+				'COMMENTS'           => "ROI: тариф {$plan}, экономия {$savings} руб/мес, тип: {$object_type}",
+				'SOURCE_ID'          => 'WEB',
+				'SOURCE_DESCRIPTION' => 'ROI-калькулятор pass24pro.ru',
 			],
+		];
+
+		wp_remote_post( $bitrix_url . 'crm.lead.add.json', [
+			'body'    => wp_json_encode( $lead_data ),
+			'headers' => [ 'Content-Type' => 'application/json' ],
+			'timeout' => 10,
 		] );
 	}
 
-	// AI Sales Factory — fire-and-forget
-	$ai_url = defined( 'AI_FACTORY_URL' ) ? AI_FACTORY_URL : '';
-	if ( $ai_url ) {
-		wp_remote_post( rtrim( $ai_url, '/' ) . '/webhooks/lead-form', [
-			'timeout'  => 0.01,
-			'blocking' => false,
-			'body'     => wp_json_encode( [
-				'source'       => 'roi_calculator',
-				'form_id'      => 'roi-calculator',
-				'contact_name' => $name,
-				'email'        => $email,
-				'phone'        => $phone,
-				'metadata'     => [
-					'object_type'      => $object_type,
-					'recommended_plan' => $plan,
-					'monthly_savings'  => $savings,
-					'score_boost'      => 20,
-				],
-			] ),
-			'headers'  => [ 'Content-Type' => 'application/json' ],
-		] );
-	}
+	// Notify AI Sales Factory (mu-plugin hooks into this action)
+	do_action( 'pass24_lead_submitted', [
+		'source'       => 'website',
+		'form_id'      => 'roi_calculator',
+		'contact_name' => $name,
+		'phone'        => $phone,
+		'email'        => $email,
+		'company_name' => '',
+		'metadata'     => [
+			'object_type'      => $object_type,
+			'recommended_plan' => $plan,
+			'monthly_savings'  => $savings,
+			'score_boost'      => 20,
+		],
+	] );
 
 	return new WP_REST_Response( [ 'success' => true ], 200 );
 }
