@@ -213,6 +213,41 @@ get_header();
 			</section>
 
 
+		<!-- CTA Chain: Product -> Configurator -> Demo -->
+			<section class="p24-section p24-section-gray">
+			  <div class="p24-container">
+			    <div class="p24-section-header" style="text-align:center;margin-bottom:2rem;">
+			      <h2 class="p24-h3">Следующий шаг</h2>
+			    </div>
+			    <div class="p24-cta-chain">
+			      <div class="p24-cta-chain__step">
+			        <div class="p24-cta-chain__num">1</div>
+			        <a href="/resources/roi-calculator/" class="p24-cta-chain__card">
+			          <div class="p24-cta-chain__title">Рассчитайте ROI</div>
+			          <div class="p24-cta-chain__desc">Узнайте, сколько сэкономите за 3 года</div>
+			        </a>
+			      </div>
+			      <div class="p24-cta-chain__arrow">&#8594;</div>
+			      <div class="p24-cta-chain__step">
+			        <div class="p24-cta-chain__num">2</div>
+			        <a href="/resources/configurator/" class="p24-cta-chain__card">
+			          <div class="p24-cta-chain__title">Подберите тариф</div>
+			          <div class="p24-cta-chain__desc">2 минуты — точная рекомендация</div>
+			        </a>
+			      </div>
+			      <div class="p24-cta-chain__arrow">&#8594;</div>
+			      <div class="p24-cta-chain__step">
+			        <div class="p24-cta-chain__num">3</div>
+			        <a href="/demo/" class="p24-cta-chain__card p24-cta-chain__card--accent">
+			          <div class="p24-cta-chain__title">Запишитесь на демо</div>
+			          <div class="p24-cta-chain__desc">Бесплатно, под ваш объект</div>
+			        </a>
+			      </div>
+			    </div>
+			  </div>
+			</section>
+
+
 		</main>
 	</div>
 </div>

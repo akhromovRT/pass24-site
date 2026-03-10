@@ -42,6 +42,11 @@ get_header();
 								<a href="/demo/" class="p24-btn p24-btn-primary p24-btn-lg">Получить решение</a>
 								<a href="#p24-solution-form" class="p24-btn p24-btn-secondary p24-btn-lg">Задать вопрос</a>
 							</div>
+							<div class="p24-solution-next-step">
+								<span>Следующий шаг:</span>
+								<a href="/resources/configurator/" class="p24-btn p24-btn-secondary">Подобрать тариф</a>
+								<a href="/resources/roi-calculator/" class="p24-btn p24-btn-secondary">Рассчитать ROI</a>
+							</div>
 						</div>
 						<?php if ( ! empty( $solution['clients'] ) ) : ?>
 						<div class="p24-solution-hero__clients">

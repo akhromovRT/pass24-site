@@ -419,3 +419,103 @@
   color: var(--p24-primary);
   font-weight: 500;
 }
+
+/* ==========================================================
+   CTA Chain (Block 4.3 — internal linking)
+   ========================================================== */
+
+.p24-cta-chain {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .p24-cta-chain { flex-direction: column; }
+}
+
+.p24-cta-chain__step {
+  flex: 1;
+  max-width: 220px;
+  text-align: center;
+}
+
+.p24-cta-chain__num {
+  width: 32px; height: 32px;
+  background: var(--p24-primary);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin: 0 auto 0.75rem;
+}
+
+.p24-cta-chain__card {
+  display: block;
+  padding: 1rem;
+  border: 2px solid var(--p24-border);
+  border-radius: var(--p24-radius-lg);
+  text-decoration: none;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.p24-cta-chain__card:hover {
+  border-color: var(--p24-primary);
+  transform: translateY(-2px);
+}
+
+.p24-cta-chain__card--accent {
+  border-color: var(--p24-primary);
+  background: #eff6ff;
+}
+
+.p24-cta-chain__title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--p24-text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.p24-cta-chain__desc { font-size: 0.8rem; color: var(--p24-text-secondary); }
+
+.p24-cta-chain__arrow {
+  font-size: 1.5rem;
+  color: var(--p24-text-secondary);
+  flex-shrink: 0;
+}
+
+/* Inline blog CTA */
+.p24-inline-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.p24-inline-cta__text p { color: var(--p24-text-secondary); margin: 0.5rem 0 0; }
+
+.p24-inline-cta__actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+/* Solution next step */
+.p24-solution-next-step {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.p24-solution-next-step span {
+  color: var(--p24-text-secondary);
+  font-size: 0.9rem;
+}
