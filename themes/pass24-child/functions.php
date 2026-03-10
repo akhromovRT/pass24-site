@@ -653,3 +653,6 @@ function pass24_handle_contact_form( WP_REST_Request $request ): WP_REST_Respons
 
 // Block 4.1 — ROI Calculator
 require_once PASS24_CHILD_DIR . '/inc/roi-calculator.php';
+
+// Block 4.2 — Solution Configurator
+require_once PASS24_CHILD_DIR . '/inc/configurator.php';
