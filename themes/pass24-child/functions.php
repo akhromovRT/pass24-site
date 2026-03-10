@@ -572,6 +572,9 @@ function pass24_handle_demo_request( WP_REST_Request $request ): WP_REST_Respons
 	return new WP_REST_Response( [ 'success' => true ], 200 );
 }
 
+// Block 4.1 — ROI Calculator
+require_once PASS24_CHILD_DIR . '/inc/roi-calculator.php';
+
 /* --------------------------------------------------------------------------
    8. REST API — обработка контактной формы
    -------------------------------------------------------------------------- */

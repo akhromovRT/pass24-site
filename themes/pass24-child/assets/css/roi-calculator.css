@@ -1,0 +1,204 @@
+/**
+ * ROI Calculator — стили
+ *
+ * Загружается только на странице /roi-calculator/.
+ * Использует CSS-переменные из design-system.css.
+ *
+ * @package PASS24_Child
+ */
+
+/* ------------------------------------------------------------------
+   Двухколоночный лейаут
+   ------------------------------------------------------------------ */
+
+.p24-roi-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .p24-roi-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Панели (левая — ввод, правая — результаты)
+   ------------------------------------------------------------------ */
+
+.p24-roi-inputs,
+.p24-roi-results {
+  background: #ffffff;
+  border: 1px solid var(--p24-border);
+  border-radius: var(--p24-radius-xl);
+  padding: 2rem;
+}
+
+/* ------------------------------------------------------------------
+   Бейдж рекомендуемого тарифа
+   ------------------------------------------------------------------ */
+
+.p24-roi-plan-badge {
+  background: #eff6ff;
+  border: 1px solid var(--p24-primary);
+  border-radius: var(--p24-radius-lg);
+  padding: 0.875rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+  font-weight: 600;
+}
+
+/* ------------------------------------------------------------------
+   Сетка метрик (3 ячейки)
+   ------------------------------------------------------------------ */
+
+.p24-roi-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (max-width: 480px) {
+  .p24-roi-metrics {
+    grid-template-columns: 1fr;
+  }
+}
+
+.p24-roi-metric {
+  background: var(--p24-bg-secondary, #f8fafc);
+  border-radius: var(--p24-radius-lg);
+  padding: 0.875rem 0.75rem;
+  text-align: center;
+}
+
+.p24-roi-metric--accent {
+  background: #eff6ff;
+  border: 1px solid var(--p24-primary);
+}
+
+.p24-roi-metric__label {
+  font-size: 0.75rem;
+  color: var(--p24-text-secondary);
+  margin-bottom: 0.25rem;
+  line-height: 1.3;
+}
+
+.p24-roi-metric__value {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--p24-text-primary, #0f172a);
+  line-height: 1.2;
+}
+
+.p24-roi-metric--accent .p24-roi-metric__value {
+  color: var(--p24-primary);
+}
+
+/* ------------------------------------------------------------------
+   TCO сравнение
+   ------------------------------------------------------------------ */
+
+.p24-roi-tco {
+  border: 1px solid var(--p24-border);
+  border-radius: var(--p24-radius-lg);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.p24-roi-tco__title {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--p24-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.75rem;
+}
+
+.p24-roi-tco__cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.p24-roi-tco__col {
+  text-align: center;
+}
+
+.p24-roi-tco__col-label {
+  font-size: 0.8125rem;
+  color: var(--p24-text-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.p24-roi-tco__col-value {
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.p24-roi-tco__col--current .p24-roi-tco__col-value {
+  color: #dc2626;
+}
+
+.p24-roi-tco__col--pass24 .p24-roi-tco__col-value {
+  color: #16a34a;
+}
+
+/* ------------------------------------------------------------------
+   Email gate
+   ------------------------------------------------------------------ */
+
+.p24-roi-email-gate {
+  background: var(--p24-bg-secondary, #f8fafc);
+  border-radius: var(--p24-radius-lg);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 0;
+}
+
+.p24-roi-email-gate .p24-form-group {
+  margin-bottom: 0.75rem;
+}
+
+.p24-roi-email-gate__title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--p24-text-primary, #0f172a);
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+/* ------------------------------------------------------------------
+   Успешная отправка
+   ------------------------------------------------------------------ */
+
+.p24-roi-email-success {
+  background: var(--p24-bg-secondary, #f8fafc);
+  border-radius: var(--p24-radius-lg);
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+
+.p24-success-icon {
+  width: 44px;
+  height: 44px;
+  background: #16a34a;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+  margin: 0 auto;
+}
