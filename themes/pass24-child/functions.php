@@ -247,6 +247,16 @@ function pass24_enqueue_assets(): void {
 		);
 	}
 
+	// Printable guides /resources/guide-*
+	if ( is_page( 'guide-choose-skud' ) || is_page( 'guide-modernize' ) ) {
+		wp_enqueue_style(
+			'pass24-guide',
+			PASS24_CHILD_URI . '/assets/css/guide.css',
+			[ 'pass24-design-system' ],
+			PASS24_CHILD_VERSION
+		);
+	}
+
 	// Global analytics — UTM cookies (all pages)
 	wp_enqueue_script(
 		'pass24-analytics',

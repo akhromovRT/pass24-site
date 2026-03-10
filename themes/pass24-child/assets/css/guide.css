@@ -1,0 +1,107 @@
+/* Lead magnet guides — screen + print */
+
+.p24-guide-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.p24-guide-header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 2px solid var(--p24-primary);
+  margin-bottom: 2rem;
+}
+
+.p24-guide-header__logo {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--p24-primary);
+  margin-bottom: 0.75rem;
+}
+
+.p24-guide-header__tag {
+  display: inline-block;
+  background: color-mix(in srgb, var(--p24-primary) 8%, white);
+  color: var(--p24-primary);
+  padding: 4px 12px;
+  border-radius: 99px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.p24-guide-email-gate {
+  background: color-mix(in srgb, var(--p24-primary) 8%, white);
+  border: 2px solid var(--p24-primary);
+  border-radius: var(--p24-radius-xl);
+  padding: 2rem;
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.p24-guide-email-gate h2 { margin-bottom: 0.5rem; }
+.p24-guide-email-gate p  { color: var(--p24-text-secondary); margin-bottom: 1.25rem; }
+
+.p24-guide-email-gate form {
+  display: flex;
+  gap: 0.75rem;
+  max-width: 400px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.p24-guide-email-gate input { flex: 1; min-width: 180px; }
+
+/* Content hidden behind gate */
+.p24-guide-content { display: none; }
+.p24-guide-content.is-unlocked { display: block; }
+
+.p24-guide-checklist {
+  list-style: none;
+  padding: 0;
+  counter-reset: checklist-counter;
+}
+
+.p24-guide-checklist li {
+  counter-increment: checklist-counter;
+  display: grid;
+  grid-template-columns: 2.5rem 1fr;
+  gap: 1rem;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--p24-border);
+  align-items: start;
+}
+
+.p24-guide-checklist li::before {
+  content: counter(checklist-counter);
+  width: 2rem; height: 2rem;
+  background: var(--p24-primary);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.p24-guide-checklist li strong { display: block; margin-bottom: 0.25rem; }
+
+/* Print styles */
+@media print {
+  header, footer, .p24-sticky-cta, .p24-exit-popup,
+  .p24-guide-email-gate, nav, .site-header, .site-footer { display: none !important; }
+
+  .p24-guide-content { display: block !important; }
+
+  body { font-size: 12pt; color: #000; }
+
+  .p24-guide-wrapper { max-width: 100%; padding: 0; }
+
+  .p24-guide-checklist li { page-break-inside: avoid; }
+
+  @page { margin: 2cm; }
+}
