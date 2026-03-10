@@ -83,7 +83,8 @@
         headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpApiSettings.nonce },
         body:    JSON.stringify({ email: email, source: 'exit_intent_checklist' }),
       })
-        .then(function () {
+        .then(function (response) {
+          if (!response.ok) throw new Error('Server error');
           form.style.display        = 'none';
           successDiv.style.display  = 'block';
           if (typeof ym !== 'undefined')   ym(106989472, 'reachGoal', 'exit_intent_lead');
