@@ -23,6 +23,7 @@ get_header();
           <h2 class="p24-h3">Получите гайд бесплатно</h2>
           <p>Введите email — план модернизации откроется сразу.</p>
           <form id="guideEmailForm">
+            <label for="guideEmail" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">Email</label>
             <input type="email" class="p24-form-input" id="guideEmail" placeholder="Ваш email" required>
             <button type="submit" class="p24-btn p24-btn-primary">Открыть гайд</button>
           </form>
@@ -104,6 +105,7 @@ get_header();
         content.classList.add('is-unlocked');
         try { sessionStorage.setItem('p24_guide_modernize_ok', '1'); } catch (er) {}
         if (typeof ym !== 'undefined') ym(106989472, 'reachGoal', 'guide_download');
+        if (typeof gtag !== 'undefined') gtag('event', 'generate_lead', { event_category: 'guide_modernize' });
         setTimeout(function () { gate.style.display = 'none'; }, 2500);
       })
       .catch(function () { btn.disabled = false; btn.textContent = 'Открыть гайд'; });

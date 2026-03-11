@@ -23,6 +23,7 @@ get_header();
           <h2 class="p24-h3">Получите полный чек-лист бесплатно</h2>
           <p>Введите email — откроем доступ немедленно.</p>
           <form id="guideEmailForm">
+            <label for="guideEmail" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">Email</label>
             <input type="email" class="p24-form-input" id="guideEmail" placeholder="Ваш email" required>
             <button type="submit" class="p24-btn p24-btn-primary">Открыть чек-лист</button>
           </form>
