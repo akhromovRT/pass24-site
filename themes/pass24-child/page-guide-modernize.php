@@ -104,7 +104,7 @@ get_header();
         success.style.display = 'block';
         content.classList.add('is-unlocked');
         try { sessionStorage.setItem('p24_guide_modernize_ok', '1'); } catch (er) {}
-        if (typeof ym !== 'undefined') ym(106989472, 'reachGoal', 'guide_download');
+        if (typeof ym !== 'undefined') ym(108384915, 'reachGoal', 'guide_download');
         if (typeof gtag !== 'undefined') gtag('event', 'generate_lead', { event_category: 'guide_modernize' });
         setTimeout(function () { gate.style.display = 'none'; }, 2500);
       })

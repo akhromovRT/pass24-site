@@ -134,7 +134,7 @@
 
 		// Yandex.Metrika (counter ID hardcoded — Ya._metrika.counter is undocumented)
 		if ( window.ym ) {
-			window.ym( 106989472, 'reachGoal', 'pricing_viewed' );
+			window.ym( 108384915, 'reachGoal', 'pricing_viewed' );
 		}
 	} );
 } )();

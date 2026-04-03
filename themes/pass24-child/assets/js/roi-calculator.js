@@ -183,7 +183,7 @@
 
           // Яндекс.Метрика
           if (typeof window.ym === 'function') {
-            window.ym(106989472, 'reachGoal', 'roi_calculator_lead');
+            window.ym(108384915, 'reachGoal', 'roi_calculator_lead');
           }
         } else {
           btn.disabled = false;

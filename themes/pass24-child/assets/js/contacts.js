@@ -72,8 +72,8 @@
 
 		// Yandex.Metrika (counter ID hardcoded — Ya._metrika.counter is undocumented)
 		if (window.ym) {
-			window.ym(106989472, 'reachGoal', 'contact_form_submit');
-			window.ym(106989472, 'reachGoal', 'generate_lead');
+			window.ym(108384915, 'reachGoal', 'contact_form_submit');
+			window.ym(108384915, 'reachGoal', 'generate_lead');
 		}
 	}
 })();

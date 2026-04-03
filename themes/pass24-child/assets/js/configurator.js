@@ -236,7 +236,7 @@
 
 					// Яндекс.Метрика
 					if ( window.ym ) {
-						window.ym( 106989472, 'reachGoal', 'configurator_lead' );
+						window.ym( 108384915, 'reachGoal', 'configurator_lead' );
 					}
 				}
 			} )

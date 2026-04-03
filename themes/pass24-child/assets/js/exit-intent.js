@@ -87,7 +87,7 @@
           if (!response.ok) throw new Error('Server error');
           form.style.display        = 'none';
           successDiv.style.display  = 'block';
-          if (typeof ym !== 'undefined')   ym(106989472, 'reachGoal', 'exit_intent_lead');
+          if (typeof ym !== 'undefined')   ym(108384915, 'reachGoal', 'exit_intent_lead');
           if (typeof gtag !== 'undefined') gtag('event', 'generate_lead', { event_category: 'exit_intent' });
         })
         .catch(function () {
