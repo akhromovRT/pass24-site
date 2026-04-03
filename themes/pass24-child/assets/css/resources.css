@@ -1,0 +1,62 @@
+/* Resources Hub — page-resources.php */
+
+.p24-resource-card {
+	display: flex;
+	align-items: flex-start;
+	gap: 20px;
+	background: var(--p24-bg-primary);
+	border: 1px solid #E5E7EB;
+	border-radius: var(--p24-radius-xl);
+	padding: 32px;
+	text-decoration: none;
+	color: inherit;
+	transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+	position: relative;
+}
+
+.p24-resource-card:hover {
+	border-color: var(--p24-primary);
+	box-shadow: var(--p24-shadow-md);
+	transform: translateY(-2px);
+}
+
+.p24-resource-card:hover .p24-resource-card__arrow {
+	opacity: 1;
+	transform: translateX(0);
+}
+
+.p24-resource-card__icon {
+	flex-shrink: 0;
+	width: 56px;
+	height: 56px;
+	border-radius: var(--p24-radius-lg);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.p24-resource-card__arrow {
+	position: absolute;
+	top: 32px;
+	right: 32px;
+	font-size: 1.5rem;
+	color: var(--p24-primary);
+	opacity: 0;
+	transform: translateX(-8px);
+	transition: opacity 0.2s, transform 0.2s;
+}
+
+@media (max-width: 768px) {
+	.p24-grid-2 {
+		grid-template-columns: 1fr;
+	}
+
+	.p24-resource-card {
+		padding: 24px;
+	}
+
+	.p24-resource-card__arrow {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}

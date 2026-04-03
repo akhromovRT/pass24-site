@@ -257,6 +257,16 @@ function pass24_enqueue_assets(): void {
 		);
 	}
 
+	// Resources hub /resources/
+	if ( is_page( 'resources' ) ) {
+		wp_enqueue_style(
+			'pass24-resources',
+			PASS24_CHILD_URI . '/assets/css/resources.css',
+			[ 'pass24-design-system' ],
+			PASS24_CHILD_VERSION
+		);
+	}
+
 	// Global analytics — UTM cookies (all pages)
 	wp_enqueue_script(
 		'pass24-analytics',
