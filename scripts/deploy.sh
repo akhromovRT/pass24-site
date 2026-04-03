@@ -17,6 +17,11 @@ echo "=== Syncing mu-plugin ==="
 cp "$REPO_DIR/mu-plugins/pass24-ai-factory.php" \
    "$WP_DIR/wp-content/mu-plugins/"
 
+echo "=== Syncing root web files (verification, etc.) ==="
+for f in "$REPO_DIR"/mailru-verification*.html "$REPO_DIR"/yandex_*.html; do
+  [ -f "$f" ] && cp "$f" "$WP_DIR/" && echo "  copied $(basename "$f")"
+done
+
 echo "=== Fixing ownership ==="
 chown -R www-data:www-data "$WP_DIR/wp-content/themes/pass24-child/"
 chown www-data:www-data "$WP_DIR/wp-content/mu-plugins/pass24-ai-factory.php"
