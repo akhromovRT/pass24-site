@@ -76,6 +76,7 @@ $footer_solutions = array_slice( pass24_get_solutions(), 0, 5, true );
 						<li><a href="/blog/">Блог</a></li>
 						<li><a href="/pricing/">Тарифы</a></li>
 						<li><a href="/integrations/">Интеграции</a></li>
+						<li><a href="https://support.pass24pro.ru" target="_blank" rel="noopener noreferrer">Техподдержка</a></li>
 						<li><a href="/demo/">Запросить демо</a></li>
 					</ul>
 				</div>

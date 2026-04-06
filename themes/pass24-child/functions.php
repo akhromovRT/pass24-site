@@ -71,6 +71,15 @@ function pass24_enqueue_assets(): void {
 		true
 	);
 
+	// Phone input mask (+7 auto-fill for all tel inputs)
+	wp_enqueue_script(
+		'pass24-phone-mask',
+		PASS24_CHILD_URI . '/assets/js/phone-mask.js',
+		[],
+		PASS24_CHILD_VERSION,
+		true
+	);
+
 	// Sticky CTA-бар
 	wp_enqueue_script(
 		'pass24-sticky-cta',
@@ -488,6 +497,121 @@ function pass24_register_rest_endpoints(): void {
 		'callback'            => 'pass24_handle_contact_form',
 		'permission_callback' => '__return_true',
 	] );
+
+	register_rest_route( 'pass24/v1', '/health', [
+		'methods'             => 'GET',
+		'callback'            => 'pass24_health_check',
+		'permission_callback' => '__return_true',
+	] );
+}
+
+/**
+ * Send data to Bitrix24 CRM via webhook.
+ * Tries crm.deal.add first (simple CRM mode), falls back to crm.lead.add (classic mode).
+ * Logs all results to error_log for debugging.
+ *
+ * @param array $fields CRM entity fields.
+ * @param string $form_id Identifier for logging.
+ * @return array{ok: bool, method: string, error: string}
+ */
+function pass24_send_to_bitrix24( array $fields, string $form_id = '' ): array {
+	$bitrix_url = defined( 'PASS24_BITRIX_WEBHOOK' ) ? PASS24_BITRIX_WEBHOOK : '';
+
+	if ( empty( $bitrix_url ) ) {
+		error_log( "[PASS24 CRM] PASS24_BITRIX_WEBHOOK not defined — skipping CRM for form '{$form_id}'" );
+		return [ 'ok' => false, 'method' => 'none', 'error' => 'PASS24_BITRIX_WEBHOOK not defined' ];
+	}
+
+	$bitrix_url = trailingslashit( $bitrix_url );
+	$payload    = [ 'fields' => $fields ];
+	$post_args  = [
+		'body'    => wp_json_encode( $payload ),
+		'headers' => [ 'Content-Type' => 'application/json' ],
+		'timeout' => 15,
+	];
+
+	// Try crm.deal.add first (works in both simple and classic CRM modes)
+	$response = wp_remote_post( $bitrix_url . 'crm.deal.add.json', $post_args );
+
+	if ( is_wp_error( $response ) ) {
+		error_log( "[PASS24 CRM] crm.deal.add WP error for '{$form_id}': " . $response->get_error_message() );
+		return [ 'ok' => false, 'method' => 'crm.deal.add', 'error' => $response->get_error_message() ];
+	}
+
+	$body   = json_decode( wp_remote_retrieve_body( $response ), true );
+	$status = wp_remote_retrieve_response_code( $response );
+
+	if ( ! empty( $body['result'] ) ) {
+		error_log( "[PASS24 CRM] crm.deal.add OK for '{$form_id}': deal ID = {$body['result']}" );
+		return [ 'ok' => true, 'method' => 'crm.deal.add', 'error' => '' ];
+	}
+
+	// Deal failed — log and try crm.lead.add as fallback (classic CRM mode)
+	$err_msg = $body['error_description'] ?? $body['error'] ?? "HTTP {$status}";
+	error_log( "[PASS24 CRM] crm.deal.add failed for '{$form_id}': {$err_msg} — trying crm.lead.add" );
+
+	$response = wp_remote_post( $bitrix_url . 'crm.lead.add.json', $post_args );
+
+	if ( is_wp_error( $response ) ) {
+		error_log( "[PASS24 CRM] crm.lead.add WP error for '{$form_id}': " . $response->get_error_message() );
+		return [ 'ok' => false, 'method' => 'crm.lead.add', 'error' => $response->get_error_message() ];
+	}
+
+	$body   = json_decode( wp_remote_retrieve_body( $response ), true );
+	$status = wp_remote_retrieve_response_code( $response );
+
+	if ( ! empty( $body['result'] ) ) {
+		error_log( "[PASS24 CRM] crm.lead.add OK for '{$form_id}': lead ID = {$body['result']}" );
+		return [ 'ok' => true, 'method' => 'crm.lead.add', 'error' => '' ];
+	}
+
+	$err_msg = $body['error_description'] ?? $body['error'] ?? "HTTP {$status}";
+	error_log( "[PASS24 CRM] crm.lead.add also failed for '{$form_id}': {$err_msg}" );
+	return [ 'ok' => false, 'method' => 'crm.lead.add', 'error' => $err_msg ];
+}
+
+/**
+ * Health check endpoint — verifies Bitrix24 webhook and AI Factory connectivity.
+ * GET /wp-json/pass24/v1/health
+ */
+function pass24_health_check(): WP_REST_Response {
+	$checks = [];
+
+	// Check PASS24_BITRIX_WEBHOOK
+	$bitrix_url = defined( 'PASS24_BITRIX_WEBHOOK' ) ? PASS24_BITRIX_WEBHOOK : '';
+	if ( empty( $bitrix_url ) ) {
+		$checks['bitrix24'] = [ 'status' => 'error', 'message' => 'PASS24_BITRIX_WEBHOOK not defined in wp-config.php' ];
+	} else {
+		// Test webhook with a profile call (read-only, no side effects)
+		$response = wp_remote_get( trailingslashit( $bitrix_url ) . 'profile.json', [ 'timeout' => 10 ] );
+		if ( is_wp_error( $response ) ) {
+			$checks['bitrix24'] = [ 'status' => 'error', 'message' => 'Connection failed: ' . $response->get_error_message() ];
+		} else {
+			$body = json_decode( wp_remote_retrieve_body( $response ), true );
+			if ( ! empty( $body['result'] ) ) {
+				$checks['bitrix24'] = [ 'status' => 'ok', 'message' => 'Webhook works, user: ' . ( $body['result']['LAST_NAME'] ?? 'unknown' ) ];
+			} else {
+				$err = $body['error_description'] ?? $body['error'] ?? 'Unknown error';
+				$checks['bitrix24'] = [ 'status' => 'error', 'message' => 'Webhook returned error: ' . $err ];
+			}
+		}
+	}
+
+	// Check AI_FACTORY_URL
+	$ai_url = defined( 'AI_FACTORY_URL' ) ? AI_FACTORY_URL : '';
+	if ( empty( $ai_url ) ) {
+		$checks['ai_factory'] = [ 'status' => 'warning', 'message' => 'AI_FACTORY_URL not defined' ];
+	} else {
+		$checks['ai_factory'] = [ 'status' => 'ok', 'message' => 'Configured: ' . $ai_url ];
+	}
+
+	$all_ok = ! in_array( 'error', array_column( $checks, 'status' ), true );
+
+	return new WP_REST_Response( [
+		'status' => $all_ok ? 'healthy' : 'unhealthy',
+		'checks' => $checks,
+		'time'   => gmdate( 'c' ),
+	], $all_ok ? 200 : 503 );
 }
 
 function pass24_handle_demo_request( WP_REST_Request $request ): WP_REST_Response {
@@ -537,36 +661,28 @@ function pass24_handle_demo_request( WP_REST_Request $request ): WP_REST_Respons
 		$crm_comment .= "\n[Частичная заявка — шаг 1]\n";
 	}
 
-	// Send to Bitrix24 if webhook is configured
-	$bitrix_url = defined( 'PASS24_BITRIX_WEBHOOK' ) ? PASS24_BITRIX_WEBHOOK : '';
-	if ( $bitrix_url ) {
-		$lead_data = [
-			'fields' => [
-				'TITLE'    => ( $is_partial ? '[Partial] ' : '' ) . 'Демо: ' . $name,
-				'NAME'     => $name,
-				'PHONE'    => [ [ 'VALUE' => $phone, 'VALUE_TYPE' => 'WORK' ] ],
-				'EMAIL'    => [ [ 'VALUE' => $email, 'VALUE_TYPE' => 'WORK' ] ],
-				'COMMENTS' => $crm_comment,
-				'SOURCE_ID' => 'WEB',
-			],
-		];
-
-		// Add UTM fields
-		foreach ( $utm as $key => $value ) {
-			$lead_data['fields'][ 'UTM_' . strtoupper( str_replace( 'utm_', '', $key ) ) ] = $value;
-		}
-
-		wp_remote_post( $bitrix_url . 'crm.lead.add.json', [
-			'body'    => wp_json_encode( $lead_data ),
-			'headers' => [ 'Content-Type' => 'application/json' ],
-			'timeout' => 10,
-		] );
+	// Send to Bitrix24
+	$crm_fields = [
+		'TITLE'     => ( $is_partial ? '[Partial] ' : '' ) . 'Демо: ' . $name,
+		'NAME'      => $name,
+		'PHONE'     => [ [ 'VALUE' => $phone, 'VALUE_TYPE' => 'WORK' ] ],
+		'EMAIL'     => [ [ 'VALUE' => $email, 'VALUE_TYPE' => 'WORK' ] ],
+		'COMMENTS'  => $crm_comment,
+		'SOURCE_ID' => 'WEB',
+	];
+	foreach ( $utm as $key => $value ) {
+		$crm_fields[ 'UTM_' . strtoupper( str_replace( 'utm_', '', $key ) ) ] = $value;
 	}
+
+	$crm_result = pass24_send_to_bitrix24( $crm_fields, 'demo_request' );
 
 	// Send email notification as fallback
 	$admin_email = get_option( 'admin_email' );
 	$subject     = ( $is_partial ? '[Partial] ' : '' ) . 'Заявка на демо: ' . $name;
 	$body        = "Имя: {$name}\nТелефон: {$phone}\nEmail: {$email}\n\n{$crm_comment}";
+	if ( ! $crm_result['ok'] ) {
+		$body .= "\n[CRM ошибка: {$crm_result['error']}]\n";
+	}
 
 	wp_mail( $admin_email, $subject, $body );
 
@@ -589,7 +705,7 @@ function pass24_handle_demo_request( WP_REST_Request $request ): WP_REST_Respons
 		], $utm ),
 	] );
 
-	return new WP_REST_Response( [ 'success' => true ], 200 );
+	return new WP_REST_Response( [ 'success' => true, 'crm' => $crm_result['ok'] ], 200 );
 }
 
 /* --------------------------------------------------------------------------
@@ -619,28 +735,18 @@ function pass24_handle_contact_form( WP_REST_Request $request ): WP_REST_Respons
 	$subject_label = $subjects_map[ $subject ] ?? $subject;
 
 	// Send to Bitrix24
-	$bitrix_url = defined( 'PASS24_BITRIX_WEBHOOK' ) ? PASS24_BITRIX_WEBHOOK : '';
-	if ( $bitrix_url ) {
-		$lead_data = [
-			'fields' => [
-				'TITLE'     => 'Контакт: ' . $subject_label . ' — ' . $name,
-				'NAME'      => $name,
-				'EMAIL'     => [ [ 'VALUE' => $email, 'VALUE_TYPE' => 'WORK' ] ],
-				'COMMENTS'  => "Тема: {$subject_label}\n\n{$message}",
-				'SOURCE_ID' => 'WEB',
-			],
-		];
-
-		if ( $phone ) {
-			$lead_data['fields']['PHONE'] = [ [ 'VALUE' => $phone, 'VALUE_TYPE' => 'WORK' ] ];
-		}
-
-		wp_remote_post( $bitrix_url . 'crm.lead.add.json', [
-			'body'    => wp_json_encode( $lead_data ),
-			'headers' => [ 'Content-Type' => 'application/json' ],
-			'timeout' => 10,
-		] );
+	$crm_fields = [
+		'TITLE'     => 'Контакт: ' . $subject_label . ' — ' . $name,
+		'NAME'      => $name,
+		'EMAIL'     => [ [ 'VALUE' => $email, 'VALUE_TYPE' => 'WORK' ] ],
+		'COMMENTS'  => "Тема: {$subject_label}\n\n{$message}",
+		'SOURCE_ID' => 'WEB',
+	];
+	if ( $phone ) {
+		$crm_fields['PHONE'] = [ [ 'VALUE' => $phone, 'VALUE_TYPE' => 'WORK' ] ];
 	}
+
+	$crm_result = pass24_send_to_bitrix24( $crm_fields, 'contact_form' );
 
 	// Email notification
 	$admin_email  = get_option( 'admin_email' );
@@ -650,6 +756,9 @@ function pass24_handle_contact_form( WP_REST_Request $request ): WP_REST_Respons
 		$mail_body .= "Телефон: {$phone}\n";
 	}
 	$mail_body .= "Тема: {$subject_label}\n\nСообщение:\n{$message}";
+	if ( ! $crm_result['ok'] ) {
+		$mail_body .= "\n[CRM ошибка: {$crm_result['error']}]\n";
+	}
 
 	wp_mail( $admin_email, $mail_subject, $mail_body );
 
@@ -668,7 +777,7 @@ function pass24_handle_contact_form( WP_REST_Request $request ): WP_REST_Respons
 		],
 	] );
 
-	return new WP_REST_Response( [ 'success' => true ], 200 );
+	return new WP_REST_Response( [ 'success' => true, 'crm' => $crm_result['ok'] ], 200 );
 }
 
 // Block 4.1 — ROI Calculator

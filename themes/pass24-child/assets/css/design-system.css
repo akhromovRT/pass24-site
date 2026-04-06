@@ -676,6 +676,19 @@ body.category .content-area {
   color: #FFFFFF;
 }
 
+.p24-header__support {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  transition: color var(--p24-transition);
+}
+
+.p24-header__support:hover {
+  color: #FFFFFF;
+}
+
 .p24-header__login {
   display: inline-flex;
   align-items: center;
@@ -859,6 +872,17 @@ body.category .content-area {
   font-weight: 600;
   color: var(--p24-text-primary);
   text-decoration: none;
+}
+
+.p24-mobile-menu__support {
+  text-align: center;
+  font-size: 14px;
+  color: var(--p24-text-secondary);
+  text-decoration: none;
+}
+
+.p24-mobile-menu__support:hover {
+  color: var(--p24-primary);
 }
 
 .p24-mobile-menu__login {

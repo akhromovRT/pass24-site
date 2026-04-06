@@ -55,23 +55,12 @@ function pass24_handle_download_lead( WP_REST_Request $request ): WP_REST_Respon
 	}
 
 	// Bitrix24 CRM
-	$bitrix_url = defined( 'PASS24_BITRIX_WEBHOOK' ) ? PASS24_BITRIX_WEBHOOK : '';
-	if ( $bitrix_url ) {
-		$lead_data = [
-			'fields' => [
-				'TITLE'              => ucfirst( str_replace( '_', ' ', $source ) ) . ': ' . $email,
-				'EMAIL'              => [ [ 'VALUE' => $email, 'VALUE_TYPE' => 'WORK' ] ],
-				'SOURCE_ID'          => 'WEB',
-				'SOURCE_DESCRIPTION' => $source . ' pass24pro.ru',
-			],
-		];
-
-		wp_remote_post( $bitrix_url . 'crm.lead.add.json', [
-			'body'    => wp_json_encode( $lead_data ),
-			'headers' => [ 'Content-Type' => 'application/json' ],
-			'timeout' => 10,
-		] );
-	}
+	pass24_send_to_bitrix24( [
+		'TITLE'              => ucfirst( str_replace( '_', ' ', $source ) ) . ': ' . $email,
+		'EMAIL'              => [ [ 'VALUE' => $email, 'VALUE_TYPE' => 'WORK' ] ],
+		'SOURCE_ID'          => 'WEB',
+		'SOURCE_DESCRIPTION' => $source . ' pass24pro.ru',
+	], $source );
 
 	// Notify AI Sales Factory (mu-plugin hooks into this action)
 	do_action( 'pass24_lead_submitted', [
