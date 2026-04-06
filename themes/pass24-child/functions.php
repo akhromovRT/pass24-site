@@ -507,7 +507,8 @@ function pass24_register_rest_endpoints(): void {
 
 /**
  * Send data to Bitrix24 CRM via webhook.
- * Tries crm.deal.add first (simple CRM mode), falls back to crm.lead.add (classic mode).
+ * Creates a LEAD (crm.lead.add) — website forms are unqualified,
+ * leads get converted to deals in the right pipeline (Облако/Оборудование) manually.
  * Logs all results to error_log for debugging.
  *
  * @param array $fields CRM entity fields.
@@ -530,26 +531,6 @@ function pass24_send_to_bitrix24( array $fields, string $form_id = '' ): array {
 		'timeout' => 15,
 	];
 
-	// Try crm.deal.add first (works in both simple and classic CRM modes)
-	$response = wp_remote_post( $bitrix_url . 'crm.deal.add.json', $post_args );
-
-	if ( is_wp_error( $response ) ) {
-		error_log( "[PASS24 CRM] crm.deal.add WP error for '{$form_id}': " . $response->get_error_message() );
-		return [ 'ok' => false, 'method' => 'crm.deal.add', 'error' => $response->get_error_message() ];
-	}
-
-	$body   = json_decode( wp_remote_retrieve_body( $response ), true );
-	$status = wp_remote_retrieve_response_code( $response );
-
-	if ( ! empty( $body['result'] ) ) {
-		error_log( "[PASS24 CRM] crm.deal.add OK for '{$form_id}': deal ID = {$body['result']}" );
-		return [ 'ok' => true, 'method' => 'crm.deal.add', 'error' => '' ];
-	}
-
-	// Deal failed — log and try crm.lead.add as fallback (classic CRM mode)
-	$err_msg = $body['error_description'] ?? $body['error'] ?? "HTTP {$status}";
-	error_log( "[PASS24 CRM] crm.deal.add failed for '{$form_id}': {$err_msg} — trying crm.lead.add" );
-
 	$response = wp_remote_post( $bitrix_url . 'crm.lead.add.json', $post_args );
 
 	if ( is_wp_error( $response ) ) {
@@ -566,7 +547,7 @@ function pass24_send_to_bitrix24( array $fields, string $form_id = '' ): array {
 	}
 
 	$err_msg = $body['error_description'] ?? $body['error'] ?? "HTTP {$status}";
-	error_log( "[PASS24 CRM] crm.lead.add also failed for '{$form_id}': {$err_msg}" );
+	error_log( "[PASS24 CRM] crm.lead.add failed for '{$form_id}': {$err_msg}" );
 	return [ 'ok' => false, 'method' => 'crm.lead.add', 'error' => $err_msg ];
 }
 
