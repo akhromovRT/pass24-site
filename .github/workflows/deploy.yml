@@ -27,6 +27,8 @@ jobs:
           username: ${{ secrets.WP_SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            set -e
             cd /opt/pass24-site
-            git pull origin main
+            git fetch origin main
+            git reset --hard origin/main
             bash scripts/deploy.sh
