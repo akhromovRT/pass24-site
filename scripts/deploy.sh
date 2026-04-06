@@ -22,6 +22,19 @@ for f in "$REPO_DIR"/mailru-verification*.html "$REPO_DIR"/yandex_*.html; do
   [ -f "$f" ] && cp "$f" "$WP_DIR/" && echo "  copied $(basename "$f")"
 done
 
+echo "=== Ensuring wp-config.php defines ==="
+WP_CONFIG="$WP_DIR/wp-config.php"
+
+if [ -n "$BITRIX_WEBHOOK_URL" ] && ! grep -q 'PASS24_BITRIX_WEBHOOK' "$WP_CONFIG"; then
+  # Insert define before "That's all, stop editing!" marker
+  sed -i "/That's all, stop editing/i define( 'PASS24_BITRIX_WEBHOOK', '$BITRIX_WEBHOOK_URL' );" "$WP_CONFIG"
+  echo "  added PASS24_BITRIX_WEBHOOK"
+elif grep -q 'PASS24_BITRIX_WEBHOOK' "$WP_CONFIG"; then
+  echo "  PASS24_BITRIX_WEBHOOK already defined"
+else
+  echo "  WARNING: BITRIX_WEBHOOK_URL env var not set, skipping"
+fi
+
 echo "=== Fixing ownership ==="
 chown -R www-data:www-data "$WP_DIR/wp-content/themes/pass24-child/"
 chown www-data:www-data "$WP_DIR/wp-content/mu-plugins/pass24-ai-factory.php"
