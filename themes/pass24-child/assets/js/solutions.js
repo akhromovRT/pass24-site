@@ -44,21 +44,22 @@
 			}
 		});
 		data.source = 'solution_form';
-		data.page_url = window.location.href;
 
 		var root = (window.wpApiSettings && window.wpApiSettings.root) || '/wp-json/';
 		var nonce = (window.wpApiSettings && window.wpApiSettings.nonce) || '';
 
-		fetch(root + 'pass24/v1/demo-request', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'X-WP-Nonce': nonce
-			},
-			body: JSON.stringify(data)
-		})
-		.then(function () { showSuccess(); })
-		.catch(function () { showSuccess(); });
+		window.P24Analytics.enrichFormData(data, function (enriched) {
+			fetch(root + 'pass24/v1/demo-request', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-WP-Nonce': nonce
+				},
+				body: JSON.stringify(enriched)
+			})
+			.then(function () { showSuccess(); })
+			.catch(function () { showSuccess(); });
+		});
 	});
 
 	function showSuccess() {

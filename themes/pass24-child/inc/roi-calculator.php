@@ -59,7 +59,7 @@ function pass24_handle_roi_lead( WP_REST_Request $request ): WP_REST_Response {
 	}
 
 	// Bitrix24 CRM
-	pass24_send_to_bitrix24( [
+	$crm_fields = array_merge( [
 		'TITLE'              => 'ROI-калькулятор: ' . ( $name ?: $email ),
 		'NAME'               => $name,
 		'EMAIL'              => [ [ 'VALUE' => $email, 'VALUE_TYPE' => 'WORK' ] ],
@@ -67,7 +67,8 @@ function pass24_handle_roi_lead( WP_REST_Request $request ): WP_REST_Response {
 		'COMMENTS'           => "ROI: тариф {$plan}, экономия {$savings} руб/мес, тип: {$object_type}",
 		'SOURCE_ID'          => 'WEB',
 		'SOURCE_DESCRIPTION' => 'ROI-калькулятор pass24pro.ru',
-	], 'roi_calculator' );
+	], pass24_extract_analytics_fields( $params ) );
+	pass24_send_to_bitrix24( $crm_fields, 'roi_calculator' );
 
 	// Notify AI Sales Factory (mu-plugin hooks into this action)
 	do_action( 'pass24_lead_submitted', [

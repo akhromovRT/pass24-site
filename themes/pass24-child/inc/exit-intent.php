@@ -55,12 +55,13 @@ function pass24_handle_download_lead( WP_REST_Request $request ): WP_REST_Respon
 	}
 
 	// Bitrix24 CRM
-	pass24_send_to_bitrix24( [
+	$crm_fields = array_merge( [
 		'TITLE'              => ucfirst( str_replace( '_', ' ', $source ) ) . ': ' . $email,
 		'EMAIL'              => [ [ 'VALUE' => $email, 'VALUE_TYPE' => 'WORK' ] ],
 		'SOURCE_ID'          => 'WEB',
 		'SOURCE_DESCRIPTION' => $source . ' pass24pro.ru',
-	], $source );
+	], pass24_extract_analytics_fields( $params ) );
+	pass24_send_to_bitrix24( $crm_fields, $source );
 
 	// Notify AI Sales Factory (mu-plugin hooks into this action)
 	do_action( 'pass24_lead_submitted', [

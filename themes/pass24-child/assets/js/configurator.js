@@ -208,44 +208,37 @@
 		var root  = ( window.wpApiSettings && window.wpApiSettings.root )  || '/wp-json/';
 		var nonce = ( window.wpApiSettings && window.wpApiSettings.nonce ) || '';
 
-		fetch( root + 'pass24/v1/configurator-lead', {
-			method:  'POST',
-			headers: {
-				'Content-Type':   'application/json',
-				'X-WP-Nonce':     nonce,
-			},
-			body: JSON.stringify( payload ),
-		} )
-			.then( function ( response ) {
-				return response.json();
+		window.P24Analytics.enrichFormData( payload, function ( enriched ) {
+			fetch( root + 'pass24/v1/configurator-lead', {
+				method:  'POST',
+				headers: {
+					'Content-Type':   'application/json',
+					'X-WP-Nonce':     nonce,
+				},
+				body: JSON.stringify( enriched ),
 			} )
-			.then( function ( data ) {
-				if ( data && data.success ) {
-					var form    = document.getElementById( 'cfgContactForm' );
-					var success = document.getElementById( 'cfgContactSuccess' );
-					if ( form )    { form.hidden    = true; }
-					if ( success ) { success.hidden = false; }
+				.then( function ( response ) {
+					return response.json();
+				} )
+				.then( function ( data ) {
+					if ( data && data.success ) {
+						var form    = document.getElementById( 'cfgContactForm' );
+						var success = document.getElementById( 'cfgContactSuccess' );
+						if ( form )    { form.hidden    = true; }
+						if ( success ) { success.hidden = false; }
 
-					// GA4
-					if ( window.gtag ) {
-						window.gtag( 'event', 'configurator_lead', {
-							event_category: 'lead',
-							recommended_plan: payload.recommended_plan,
-						} );
+						if ( window.ym ) {
+							window.ym( 108384915, 'reachGoal', 'configurator_lead' );
+						}
 					}
-
-					// Яндекс.Метрика
-					if ( window.ym ) {
-						window.ym( 108384915, 'reachGoal', 'configurator_lead' );
-					}
-				}
-			} )
-			.catch( function () {
+				} )
+				.catch( function () {
 				if ( btn ) {
 					btn.disabled    = false;
 					btn.textContent = 'Получить предложение';
 				}
 			} );
+		} );
 	}
 
 	/* ------------------------------------------------------------------

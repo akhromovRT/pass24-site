@@ -78,22 +78,24 @@
       btn.disabled    = true;
       btn.textContent = 'Отправляем...';
 
-      fetch(wpApiSettings.root + 'pass24/v1/download-lead', {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpApiSettings.nonce },
-        body:    JSON.stringify({ email: email, source: 'exit_intent_checklist' }),
-      })
-        .then(function (response) {
-          if (!response.ok) throw new Error('Server error');
-          form.style.display        = 'none';
-          successDiv.style.display  = 'block';
-          if (typeof ym !== 'undefined')   ym(108384915, 'reachGoal', 'exit_intent_lead');
-          if (typeof gtag !== 'undefined') gtag('event', 'generate_lead', { event_category: 'exit_intent' });
+      var data = { email: email, source: 'exit_intent_checklist' };
+      window.P24Analytics.enrichFormData(data, function (enriched) {
+        fetch(wpApiSettings.root + 'pass24/v1/download-lead', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': wpApiSettings.nonce },
+          body:    JSON.stringify(enriched),
         })
-        .catch(function () {
-          btn.disabled    = false;
-          btn.textContent = 'Получить чек-лист';
-        });
+          .then(function (response) {
+            if (!response.ok) throw new Error('Server error');
+            form.style.display        = 'none';
+            successDiv.style.display  = 'block';
+            if (typeof ym !== 'undefined') ym(108384915, 'reachGoal', 'exit_intent_lead');
+          })
+          .catch(function () {
+            btn.disabled    = false;
+            btn.textContent = 'Получить чек-лист';
+          });
+      });
     });
 
     var skip = el('button', 'p24-exit-popup__skip', 'Нет, спасибо');

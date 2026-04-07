@@ -506,6 +506,30 @@ function pass24_register_rest_endpoints(): void {
 }
 
 /**
+ * Extract UTM + Yandex ClientID from form submission params.
+ * Returns array of CRM-ready fields to merge into crm.lead.add payload.
+ */
+function pass24_extract_analytics_fields( array $params ): array {
+	$fields = [];
+
+	// UTM parameters → built-in Bitrix24 lead fields
+	foreach ( [ 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content' ] as $key ) {
+		if ( ! empty( $params[ $key ] ) ) {
+			$fields[ 'UTM_' . strtoupper( str_replace( 'utm_', '', $key ) ) ] = sanitize_text_field( $params[ $key ] );
+		}
+	}
+
+	// Yandex Metrika ClientID → B242YA custom field
+	if ( ! empty( $params['ym_client_id'] ) ) {
+		$fields['UF_CRM_YA_CID'] = sanitize_text_field( $params['ym_client_id'] );
+		// Also set counter ID so B242YA can match
+		$fields['UF_CRM_YA_COUNTER_ID'] = '108384915';
+	}
+
+	return $fields;
+}
+
+/**
  * Send data to Bitrix24 CRM via webhook.
  * Creates a LEAD (crm.lead.add) — website forms are unqualified,
  * leads get converted to deals in the right pipeline (Облако/Оборудование) manually.
@@ -651,9 +675,7 @@ function pass24_handle_demo_request( WP_REST_Request $request ): WP_REST_Respons
 		'COMMENTS'  => $crm_comment,
 		'SOURCE_ID' => 'WEB',
 	];
-	foreach ( $utm as $key => $value ) {
-		$crm_fields[ 'UTM_' . strtoupper( str_replace( 'utm_', '', $key ) ) ] = $value;
-	}
+	$crm_fields = array_merge( $crm_fields, pass24_extract_analytics_fields( $params ) );
 
 	$crm_result = pass24_send_to_bitrix24( $crm_fields, 'demo_request' );
 
@@ -726,6 +748,7 @@ function pass24_handle_contact_form( WP_REST_Request $request ): WP_REST_Respons
 	if ( $phone ) {
 		$crm_fields['PHONE'] = [ [ 'VALUE' => $phone, 'VALUE_TYPE' => 'WORK' ] ];
 	}
+	$crm_fields = array_merge( $crm_fields, pass24_extract_analytics_fields( $params ) );
 
 	$crm_result = pass24_send_to_bitrix24( $crm_fields, 'contact_form' );
 
@@ -789,5 +812,32 @@ function pass24_metrika_counter(): void {
 	</script>
 	<noscript><div><img src="https://mc.yandex.ru/watch/108384915" style="position:absolute;left:-9999px;" alt=""/></div></noscript>
 	<!-- /Yandex.Metrika counter -->
+	<?php
+}
+
+/* --------------------------------------------------------------------------
+   B242YA — Bitrix24 ↔ Yandex Metrika bridge (сквозная аналитика)
+   Автоматически передаёт ClientID в CRM-формы виджета и Open Lines.
+   Для кастомных REST API форм ClientID передаётся через P24Analytics.
+   -------------------------------------------------------------------------- */
+
+add_action( 'wp_head', 'pass24_b242ya_script', 6 );
+
+function pass24_b242ya_script(): void {
+	?>
+	<!-- B242YA: Bitrix24 + Yandex Metrika end-to-end analytics -->
+	<script>
+	(function(w,d,u){
+	var s=d.createElement('script');s.defer=false;s.async=false;s.id='b242ya-script';s.src=u+'?'+(Date.now()/60000|0);
+	var h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(s,h);
+	})(window,document,'https://67p.b242ya.ru/static/js/b242ya.js');
+	var b242yaScript = document.querySelector('#b242ya-script');
+	b242yaScript.addEventListener('load', function() {
+	B242YAInit({
+		portal:'https://pass24pro.bitrix24.ru/',
+		pid:'6e4f0ee8a158f9b5be4c66e7f71289d0'
+	});
+	});
+	</script>
 	<?php
 }

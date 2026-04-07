@@ -152,41 +152,35 @@
     var apiRoot = (window.wpApiSettings && window.wpApiSettings.root) ? window.wpApiSettings.root : '/wp-json/';
     var nonce   = (window.wpApiSettings && window.wpApiSettings.nonce) ? window.wpApiSettings.nonce : '';
 
-    fetch(apiRoot + 'pass24/v1/roi-lead', {
-      method:  'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-WP-Nonce':   nonce,
-      },
-      body: JSON.stringify({
-        name:              name,
-        email:             email,
-        phone:             phone,
-        object_type:       state.objectType,
-        recommended_plan:  state.plan ? state.plan.name : '',
-        monthly_savings:   state.monthlySavings,
-      }),
-    })
-      .then(function (res) { return res.json(); })
-      .then(function (data) {
-        if (data && data.success) {
-          document.getElementById('roiEmailForm').style.display    = 'none';
-          document.getElementById('roiEmailSuccess').style.display = '';
+    var payload = {
+      name:              name,
+      email:             email,
+      phone:             phone,
+      object_type:       state.objectType,
+      recommended_plan:  state.plan ? state.plan.name : '',
+      monthly_savings:   state.monthlySavings,
+    };
 
-          // GA4
-          if (typeof window.gtag === 'function') {
-            window.gtag('event', 'generate_lead', {
-              event_category: 'roi_calculator',
-              event_label:    state.plan ? state.plan.name : '',
-            });
-          }
+    window.P24Analytics.enrichFormData(payload, function (enriched) {
+      fetch(apiRoot + 'pass24/v1/roi-lead', {
+        method:  'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-WP-Nonce':   nonce,
+        },
+        body: JSON.stringify(enriched),
+      })
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+          if (data && data.success) {
+            document.getElementById('roiEmailForm').style.display    = 'none';
+            document.getElementById('roiEmailSuccess').style.display = '';
 
-          // Яндекс.Метрика
-          if (typeof window.ym === 'function') {
-            window.ym(108384915, 'reachGoal', 'roi_calculator_lead');
-          }
-        } else {
-          btn.disabled = false;
+            if (typeof window.ym === 'function') {
+              window.ym(108384915, 'reachGoal', 'roi_calculator_lead');
+            }
+          } else {
+            btn.disabled = false;
           btn.textContent = 'Получить предложение';
         }
       })
@@ -194,6 +188,7 @@
         btn.disabled = false;
         btn.textContent = 'Получить предложение';
       });
+    });
   }
 
   /* ------------------------------------------------------------------

@@ -93,22 +93,24 @@ get_header();
     btn.disabled = true;
     btn.textContent = 'Открываем...';
 
-    fetch(window.wpApiSettings.root + 'pass24/v1/download-lead', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': window.wpApiSettings.nonce },
-      body:    JSON.stringify({ email: email, source: 'guide_modernize' }),
-    })
-      .then(function (response) {
-        if (!response.ok) throw new Error('Server error');
-        form.style.display = 'none';
-        success.style.display = 'block';
-        content.classList.add('is-unlocked');
-        try { sessionStorage.setItem('p24_guide_modernize_ok', '1'); } catch (er) {}
-        if (typeof ym !== 'undefined') ym(108384915, 'reachGoal', 'guide_download');
-        if (typeof gtag !== 'undefined') gtag('event', 'generate_lead', { event_category: 'guide_modernize' });
-        setTimeout(function () { gate.style.display = 'none'; }, 2500);
+    var data = { email: email, source: 'guide_modernize' };
+    window.P24Analytics.enrichFormData(data, function (enriched) {
+      fetch(window.wpApiSettings.root + 'pass24/v1/download-lead', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': window.wpApiSettings.nonce },
+        body:    JSON.stringify(enriched),
       })
-      .catch(function () { btn.disabled = false; btn.textContent = 'Открыть гайд'; });
+        .then(function (response) {
+          if (!response.ok) throw new Error('Server error');
+          form.style.display = 'none';
+          success.style.display = 'block';
+          content.classList.add('is-unlocked');
+          try { sessionStorage.setItem('p24_guide_modernize_ok', '1'); } catch (er) {}
+          if (typeof ym !== 'undefined') ym(108384915, 'reachGoal', 'guide_download');
+          setTimeout(function () { gate.style.display = 'none'; }, 2500);
+        })
+        .catch(function () { btn.disabled = false; btn.textContent = 'Открыть гайд'; });
+    });
   });
 })();
 </script>

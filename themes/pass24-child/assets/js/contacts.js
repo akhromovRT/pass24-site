@@ -35,42 +35,28 @@
 			}
 		});
 		data.source = 'contact_form';
-		data.page_url = window.location.href;
 
 		var root = (window.wpApiSettings && window.wpApiSettings.root) || '/wp-json/';
 		var nonce = (window.wpApiSettings && window.wpApiSettings.nonce) || '';
 
-		fetch(root + 'pass24/v1/contact', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'X-WP-Nonce': nonce
-			},
-			body: JSON.stringify(data)
-		})
-		.then(function () { showSuccess(); })
-		.catch(function () { showSuccess(); });
+		window.P24Analytics.enrichFormData(data, function (enriched) {
+			fetch(root + 'pass24/v1/contact', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-WP-Nonce': nonce
+				},
+				body: JSON.stringify(enriched)
+			})
+			.then(function () { showSuccess(); })
+			.catch(function () { showSuccess(); });
+		});
 	});
 
 	function showSuccess() {
 		form.style.display = 'none';
 		if (success) success.style.display = 'block';
 
-		// GA4 via dataLayer
-		if (window.dataLayer) {
-			window.dataLayer.push({
-				event: 'contact_form_submit',
-				event_category: 'lead_generation',
-				form_name: 'contact_form'
-			});
-			window.dataLayer.push({
-				event: 'generate_lead',
-				event_category: 'form_submission',
-				form_name: 'contact_form'
-			});
-		}
-
-		// Yandex.Metrika (counter ID hardcoded — Ya._metrika.counter is undocumented)
 		if (window.ym) {
 			window.ym(108384915, 'reachGoal', 'contact_form_submit');
 			window.ym(108384915, 'reachGoal', 'generate_lead');

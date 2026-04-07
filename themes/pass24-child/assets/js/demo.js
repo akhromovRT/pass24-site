@@ -161,24 +161,24 @@
 
 		var data = collectFormData();
 
-		// Send to REST API
-		fetch(getRestUrl('pass24/v1/demo-request'), {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'X-WP-Nonce': getNonce()
-			},
-			body: JSON.stringify(data)
-		})
-		.then(function (res) { return res.json(); })
-		.then(function () {
-			showThankyou();
-			trackConversion(data);
-		})
-		.catch(function () {
-			// Even if API fails, show thank you (lead data captured in partial save)
-			showThankyou();
-			trackConversion(data);
+		// Enrich with UTM + Yandex ClientID, then send
+		window.P24Analytics.enrichFormData(data, function (enriched) {
+			fetch(getRestUrl('pass24/v1/demo-request'), {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-WP-Nonce': getNonce()
+				},
+				body: JSON.stringify(enriched)
+			})
+			.then(function () {
+				showThankyou();
+				trackConversion();
+			})
+			.catch(function () {
+				showThankyou();
+				trackConversion();
+			});
 		});
 	});
 
@@ -193,15 +193,15 @@
 			partial: true
 		};
 
-		fetch(getRestUrl('pass24/v1/demo-request'), {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'X-WP-Nonce': getNonce()
-			},
-			body: JSON.stringify(data)
-		}).catch(function () {
-			// Silent fail for partial save
+		window.P24Analytics.enrichFormData(data, function (enriched) {
+			fetch(getRestUrl('pass24/v1/demo-request'), {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-WP-Nonce': getNonce()
+				},
+				body: JSON.stringify(enriched)
+			}).catch(function () {});
 		});
 	}
 
@@ -215,17 +215,6 @@
 				data[key] = value;
 			}
 		});
-
-		// Add UTM from cookies
-		var utmParams = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
-		utmParams.forEach(function (param) {
-			var val = getCookie(param);
-			if (val) data[param] = val;
-		});
-
-		data.page_url = window.location.href;
-		data.referrer = document.referrer;
-
 		return data;
 	}
 
@@ -270,11 +259,6 @@
 		}
 		var nonceField = form.querySelector('#p24_demo_nonce');
 		return nonceField ? nonceField.value : '';
-	}
-
-	function getCookie(name) {
-		var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-		return match ? decodeURIComponent(match[2]) : '';
 	}
 
 })();

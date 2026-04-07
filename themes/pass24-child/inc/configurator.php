@@ -58,7 +58,7 @@ function pass24_handle_configurator_lead( WP_REST_Request $request ): WP_REST_Re
 	}
 
 	// Bitrix24 CRM
-	pass24_send_to_bitrix24( [
+	$crm_fields = array_merge( [
 		'TITLE'              => 'Конфигуратор: ' . ( $name ?: $email ?: $phone ),
 		'NAME'               => $name,
 		'EMAIL'              => [ [ 'VALUE' => $email, 'VALUE_TYPE' => 'WORK' ] ],
@@ -66,7 +66,8 @@ function pass24_handle_configurator_lead( WP_REST_Request $request ): WP_REST_Re
 		'COMMENTS'           => "Конфигуратор: тариф {$recommended_plan}, тип объекта: {$object_type}",
 		'SOURCE_ID'          => 'WEB',
 		'SOURCE_DESCRIPTION' => 'Конфигуратор решений pass24pro.ru',
-	], 'configurator' );
+	], pass24_extract_analytics_fields( $params ) );
+	pass24_send_to_bitrix24( $crm_fields, 'configurator' );
 
 	// Notify AI Sales Factory (mu-plugin hooks into this action)
 	do_action( 'pass24_lead_submitted', [
