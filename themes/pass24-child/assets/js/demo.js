@@ -242,41 +242,15 @@
 	/* ---- Analytics tracking ---- */
 
 	function trackStep(step) {
-		// GA4 via dataLayer (GTM)
-		if (window.dataLayer) {
-			window.dataLayer.push({
-				event: 'demo_form_step',
-				step_number: step,
-				step_name: ['contacts', 'qualification', 'callback'][step - 1]
-			});
-		}
-
-		// Yandex.Metrika
-		if (window.ym && window.Ya && window.Ya._metrika && window.Ya._metrika.counter) {
-			window.ym(window.Ya._metrika.counter, 'reachGoal', 'demo_step_' + step);
+		if (window.ym) {
+			window.ym(108384915, 'reachGoal', 'demo_step_' + step);
 		}
 	}
 
-	function trackConversion(data) {
-		// GA4
-		if (window.dataLayer) {
-			window.dataLayer.push({
-				event: 'demo_request',
-				event_category: 'lead_generation',
-				event_label: data.object_type || 'unknown',
-				object_type: data.object_type,
-				access_points: data.access_points
-			});
-			window.dataLayer.push({
-				event: 'generate_lead',
-				event_category: 'form_submission',
-				form_name: 'demo_request_form'
-			});
-		}
-
-		// Yandex.Metrika
-		if (window.ym && window.Ya && window.Ya._metrika && window.Ya._metrika.counter) {
-			window.ym(window.Ya._metrika.counter, 'reachGoal', 'demo_request');
+	function trackConversion() {
+		if (window.ym) {
+			window.ym(108384915, 'reachGoal', 'demo_request');
+			window.ym(108384915, 'reachGoal', 'generate_lead');
 		}
 	}
 

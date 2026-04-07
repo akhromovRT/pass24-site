@@ -65,14 +65,10 @@
 		form.style.display = 'none';
 		if (success) success.style.display = 'block';
 
-		// GA4
-		if (window.dataLayer) {
-			window.dataLayer.push({
-				event: 'solution_form_submit',
-				event_category: 'lead_generation',
-				form_name: 'solution_form',
-				segment: segmentField ? segmentField.value : ''
-			});
+		// Yandex.Metrika
+		if (window.ym) {
+			window.ym(108384915, 'reachGoal', 'demo_request');
+			window.ym(108384915, 'reachGoal', 'generate_lead');
 		}
 	}
 })();
