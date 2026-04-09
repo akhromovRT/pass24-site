@@ -841,3 +841,23 @@ function pass24_b242ya_script(): void {
 	</script>
 	<?php
 }
+
+/* --------------------------------------------------------------------------
+   Bitrix24 Open Lines — онлайн-чат на всех страницах
+   Виджет создан в Bitrix24 (pass24pro.bitrix24.ru).
+   Все сообщения → CRM лид. B242YA передаёт Yandex ClientID автоматически.
+   -------------------------------------------------------------------------- */
+
+add_action( 'wp_footer', 'pass24_open_lines_widget', 20 );
+
+function pass24_open_lines_widget(): void {
+	?>
+	<!-- Bitrix24 Open Lines Chat Widget -->
+	<script>
+	(function(w,d,u){
+		var s=d.createElement('script');s.async=true;s.src=u+'?'+(Date.now()/60000|0);
+		var h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(s,h);
+	})(window,document,'https://cdn-ru.bitrix24.ru/b37140496/crm/site_button/loader_2_l155fr.js');
+	</script>
+	<?php
+}
