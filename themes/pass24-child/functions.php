@@ -98,6 +98,17 @@ function pass24_enqueue_assets(): void {
 		true
 	);
 
+	// Персонализация Hero по сегменту — только на главной
+	if ( is_front_page() ) {
+		wp_enqueue_script(
+			'pass24-segment-personalize',
+			PASS24_CHILD_URI . '/assets/js/segment-personalize.js',
+			[],
+			PASS24_CHILD_VERSION,
+			true
+		);
+	}
+
 	// Страница тарифов — загружать только на /pricing/
 	if ( is_page( 'pricing' ) || is_page( 'tarify' ) ) {
 		wp_enqueue_style(
