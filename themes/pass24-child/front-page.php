@@ -592,7 +592,7 @@ get_header();
 					</div>
 
 					<div style="margin-top: 24px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-						<a href="tel:+74954144455" style="color: rgba(255,255,255,0.7); text-decoration: none;">&#9742; +7 (495) 414-44-55</a>
+						<a href="tel:+74954144455" class="b242ya-call-tracker" style="color: rgba(255,255,255,0.7); text-decoration: none;">&#9742; +7 (495) 414-44-55</a>
 						<a href="https://t.me/pass24" style="color: rgba(255,255,255,0.7); text-decoration: none;">Telegram</a>
 					</div>
 

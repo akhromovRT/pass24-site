@@ -85,7 +85,7 @@ $footer_solutions = array_slice( pass24_get_solutions(), 0, 5, true );
 				<div class="p24-footer__col">
 					<h4 class="p24-footer__heading">Контакты</h4>
 					<ul class="p24-footer__links p24-footer__contacts">
-						<li>
+						<li class="b242ya-call-tracker">
 							<a href="tel:+74954144455">+7 (495) 414-44-55</a>
 						</li>
 						<li>
@@ -132,7 +132,7 @@ $footer_solutions = array_slice( pass24_get_solutions(), 0, 5, true );
 		Попробовать бесплатно — 14 дней
 	</a>
 	<span class="p24-sticky-cta__divider"></span>
-	<a href="tel:+74954144455" class="p24-sticky-cta__phone">
+	<a href="tel:+74954144455" class="p24-sticky-cta__phone b242ya-call-tracker">
 		+7 (495) 414-44-55
 	</a>
 </div>

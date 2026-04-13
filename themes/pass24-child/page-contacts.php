@@ -45,7 +45,7 @@ get_header();
 						<!-- Левая колонка: контактная информация -->
 						<div class="p24-contacts-info">
 
-							<div class="p24-contacts-block">
+							<div class="p24-contacts-block b242ya-call-tracker">
 								<h3 class="p24-contacts-block__heading">Телефон</h3>
 								<a href="tel:+74954144455" class="p24-contacts-block__value p24-contacts-block__value--lg">
 									+7 (495) 414-44-55

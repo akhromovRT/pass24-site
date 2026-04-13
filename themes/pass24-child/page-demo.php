@@ -249,7 +249,7 @@ get_header();
 								</div>
 							</div>
 
-							<div class="p24-demo-contact">
+							<div class="p24-demo-contact b242ya-call-tracker">
 								<p>Предпочитаете позвонить?</p>
 								<a href="tel:+74954144455" class="p24-demo-contact__phone">+7 (495) 414-44-55</a>
 								<div class="p24-demo-contact__messengers">
