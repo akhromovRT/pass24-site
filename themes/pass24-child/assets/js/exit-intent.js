@@ -1,22 +1,36 @@
 /**
  * Exit-intent popup — PASS24
  * Triggers:
- *   1. mouseout to top of page (desktop) on /products/* and /solutions/*
- *   2. After 30 seconds on all pages
- * Shows once per session (sessionStorage).
+ *   1. mouseout to top of page (desktop) — only after DELAY_MS
+ *   2. After DELAY_MS (15s) on all pages
+ * Shows once per 7 days (cookie). Does NOT fire before delay.
  */
 (function () {
   'use strict';
 
-  var SESSION_KEY = 'p24_exit_shown';
-  var DELAY_MS    = 30000;
+  var COOKIE_NAME  = 'p24_exit_shown';
+  var COOKIE_DAYS  = 7;
+  var DELAY_MS     = 15000;
+
+  function getCookie(name) {
+    var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    return match ? match[2] : '';
+  }
+
+  function setCookie(name, value, days) {
+    var date = new Date();
+    date.setTime(date.getTime() + (days * 86400000));
+    document.cookie = name + '=' + value +
+      '; expires=' + date.toUTCString() +
+      '; path=/; SameSite=Lax';
+  }
 
   function alreadyShown() {
-    try { return sessionStorage.getItem(SESSION_KEY) === '1'; } catch (e) { return false; }
+    return getCookie(COOKIE_NAME) === '1';
   }
 
   function markShown() {
-    try { sessionStorage.setItem(SESSION_KEY, '1'); } catch (e) {}
+    setCookie(COOKIE_NAME, '1', COOKIE_DAYS);
   }
 
   function isProductOrSolutionPage() {
@@ -155,12 +169,19 @@
   document.addEventListener('DOMContentLoaded', function () {
     if (alreadyShown()) return;
 
-    // Trigger 1: exit intent (desktop — mouse leaves viewport from top)
+    var delayPassed = false;
+
+    // Enable triggers only after delay
+    setTimeout(function () {
+      delayPassed = true;
+    }, DELAY_MS);
+
+    // Trigger 1: exit intent (desktop — mouse leaves viewport from top, only after delay)
     document.addEventListener('mouseleave', function (e) {
-      if (e.clientY <= 0) showPopup();
+      if (delayPassed && e.clientY <= 0) showPopup();
     });
 
-    // Trigger 2: timed
-    setTimeout(showPopup, DELAY_MS);
+    // Trigger 2: timed (shows after delay + 15s extra if user hasn't left)
+    setTimeout(showPopup, DELAY_MS + 15000);
   });
 })();
