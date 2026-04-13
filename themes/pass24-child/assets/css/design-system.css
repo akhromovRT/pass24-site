@@ -1144,3 +1144,89 @@ body.p24-menu-open {
     padding-left: 0;
   }
 }
+
+/* --------------------------------------------------------------------------
+   Consent checkbox (ФЗ-152)
+   -------------------------------------------------------------------------- */
+
+.p24-form-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--p24-text-secondary);
+  margin-top: 12px;
+  cursor: pointer;
+}
+
+.p24-form-consent input[type="checkbox"] {
+  margin-top: 2px;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--p24-primary);
+}
+
+.p24-form-consent a {
+  color: var(--p24-primary);
+  text-decoration: underline;
+}
+
+.p24-form-consent a:hover {
+  text-decoration: none;
+}
+
+/* --------------------------------------------------------------------------
+   Cookie consent banner
+   -------------------------------------------------------------------------- */
+
+.p24-cookie-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--p24-gray-900, #1a1a2e);
+  color: #fff;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  font-size: 14px;
+  line-height: 1.4;
+  z-index: 99999;
+  box-shadow: 0 -2px 12px rgba(0,0,0,.15);
+}
+
+.p24-cookie-banner a {
+  color: #93b5ff;
+  text-decoration: underline;
+}
+
+.p24-cookie-banner__btn {
+  background: var(--p24-primary, #1a73e8);
+  color: #fff;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.p24-cookie-banner__btn:hover {
+  opacity: .9;
+}
+
+@media (max-width: 768px) {
+  .p24-cookie-banner {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+    padding: 14px 16px;
+    font-size: 13px;
+  }
+}

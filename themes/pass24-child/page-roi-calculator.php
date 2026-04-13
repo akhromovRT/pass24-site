@@ -188,9 +188,10 @@ get_header();
 									Получить предложение
 								</button>
 
-								<p style="font-size: 0.75rem; color: var(--p24-text-secondary); margin-top: 0.75rem; text-align: center;">
-									Нажимая кнопку, вы соглашаетесь с <a href="/privacy/" style="color: var(--p24-primary);">политикой конфиденциальности</a>
-								</p>
+								<label class="p24-form-consent">
+									<input type="checkbox" name="consent" id="roiConsent" required>
+									<span>Я&nbsp;даю <a href="/privacy/" target="_blank">согласие на&nbsp;обработку персональных данных</a></span>
+								</label>
 							</div>
 
 							<!-- Успех после отправки -->

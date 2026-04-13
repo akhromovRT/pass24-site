@@ -73,7 +73,24 @@
 
     var btn   = el('button', 'p24-btn p24-btn-primary', 'Получить чек-лист');
     btn.type  = 'submit';
+
+    var consentLabel = el('label', 'p24-form-consent');
+    var consentBox   = document.createElement('input');
+    consentBox.type  = 'checkbox';
+    consentBox.name  = 'consent';
+    consentBox.required = true;
+    var consentSpan  = document.createElement('span');
+    var consentLink  = document.createElement('a');
+    consentLink.href = '/privacy/';
+    consentLink.target = '_blank';
+    consentLink.textContent = 'согласие на\u00A0обработку персональных данных';
+    consentSpan.appendChild(document.createTextNode('Я\u00A0даю '));
+    consentSpan.appendChild(consentLink);
+    consentLabel.appendChild(consentBox);
+    consentLabel.appendChild(consentSpan);
+
     form.appendChild(input);
+    form.appendChild(consentLabel);
     form.appendChild(btn);
 
     var successDiv = el('div', 'p24-exit-popup__success');

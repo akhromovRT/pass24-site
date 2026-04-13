@@ -287,9 +287,10 @@ get_header();
 							Отправить заявку
 						</button>
 
-						<p class="p24-small" style="text-align: center; margin-top: 12px; color: var(--p24-text-secondary);">
-							Нажимая кнопку, вы&nbsp;соглашаетесь с&nbsp;<a href="/privacy/" style="color: var(--p24-primary);">политикой конфиденциальности</a>
-						</p>
+						<label class="p24-form-consent">
+							<input type="checkbox" name="consent" required>
+							<span>Я&nbsp;даю <a href="/privacy/" target="_blank">согласие на&nbsp;обработку персональных данных</a></span>
+						</label>
 					</form>
 
 					<!-- Success state -->

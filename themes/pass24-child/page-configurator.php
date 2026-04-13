@@ -269,9 +269,10 @@ get_header();
 										Получить предложение
 									</button>
 
-									<p class="p24-form-privacy">
-										Нажимая кнопку, вы соглашаетесь с <a href="/privacy/" style="color: var(--p24-primary);">политикой конфиденциальности</a>
-									</p>
+									<label class="p24-form-consent">
+										<input type="checkbox" name="consent" id="cfgConsent" required>
+										<span>Я&nbsp;даю <a href="/privacy/" target="_blank">согласие на&nbsp;обработку персональных данных</a></span>
+									</label>
 								</div>
 							</div>
 

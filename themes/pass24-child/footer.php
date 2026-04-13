@@ -112,7 +112,9 @@ $footer_solutions = array_slice( pass24_get_solutions(), 0, 5, true );
 					&copy; <?php echo date( 'Y' ); ?> PASS24.online. Все права защищены.
 				</div>
 				<div class="p24-footer__legal">
-					<a href="/privacy/">Политика конфиденциальности</a>
+					<a href="/privacy-policy/">Политика конфиденциальности</a>
+					<a href="/privacy/">Согласие на обработку ПД</a>
+					<a href="/oferta/">Публичная оферта</a>
 					<a href="/terms/">Условия использования</a>
 					<span class="p24-footer__registry">Реестр российского ПО</span>
 				</div>

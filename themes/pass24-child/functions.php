@@ -80,6 +80,15 @@ function pass24_enqueue_assets(): void {
 		true
 	);
 
+	// Cookie consent banner (ФЗ-152)
+	wp_enqueue_script(
+		'pass24-cookie-consent',
+		PASS24_CHILD_URI . '/assets/js/cookie-consent.js',
+		[],
+		PASS24_CHILD_VERSION,
+		true
+	);
+
 	// Sticky CTA-бар
 	wp_enqueue_script(
 		'pass24-sticky-cta',

@@ -195,6 +195,11 @@ get_header();
 											<textarea id="p24-comment" name="comment" rows="3" placeholder="Расскажите подробнее о задаче, если хотите"></textarea>
 										</div>
 
+										<label class="p24-form-consent">
+											<input type="checkbox" name="consent" required>
+											<span>Я&nbsp;даю <a href="/privacy/" target="_blank">согласие на&nbsp;обработку персональных данных</a></span>
+										</label>
+
 										<div class="p24-demo-buttons">
 											<button type="button" class="p24-btn p24-btn-secondary p24-demo-prev" data-prev="2">
 												&larr; Назад
