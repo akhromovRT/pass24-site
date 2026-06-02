@@ -40,3 +40,12 @@
 - Если принято важное решение — добавить запись в `agent_docs/adr.md`.
 - Свериться с `agent_docs/guides/dod.md` и убедиться, что критерии DoD выполнены или зафиксированы причины.
 - Зафиксировать причины, если тесты не запускались или не добавлены новые (если это ожидается).
+
+## Контекст в PKM Vault
+
+Бизнес-контекст, стратегия и история проекта — в Obsidian Cascade vault:
+- **Карточка:** `~/Library/Mobile Documents/iCloud~md~obsidian/Documents/Cascade/Projects/PASS24-Site/CLAUDE.md`
+- **GitHub:** https://github.com/akhromovRT/pass24-site
+- **Реестр:** `~/Library/Mobile Documents/iCloud~md~obsidian/Documents/Cascade/MOC/Портфель проектов.md`
+
+При стратегических вопросах читать vault-карточку для понимания бизнес-целей и приоритетов.
